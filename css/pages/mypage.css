@@ -1,0 +1,186 @@
+/* ==========================================================================
+   マイページ（mypage.html）固有のスタイル
+   枠は css/layouts/dashboard.css。ここでは応募・スカウトのカード、動画未登録の案内、案件カードの並びを足す。
+   〜639px：カードの見出しとステータスは縦積み／640px〜：見出しの右にステータス
+   色はすべてセマンティックトークン（var(--color-*)）を使う。
+   ========================================================================== */
+
+/* reset.css に [hidden] の指定が無く、display を持つクラスが hidden 属性に勝ってしまうため明示する */
+.mypage [hidden] {
+  display: none;
+}
+
+.mypage__gate {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-muted);
+  color: var(--color-foreground);
+  font-weight: var(--font-weight-medium);
+}
+
+.mypage__content {
+  gap: var(--space-10);
+}
+
+.mypage__error {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+}
+
+.mypage__section {
+  min-width: 0;
+}
+
+.mypage__heading {
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-tight);
+}
+
+.mypage__lead {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.mypage__section-action {
+  align-self: flex-start;
+}
+
+/* ---- 動画未登録の案内（6.6） ------------------------------------------- */
+.mypage__notice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-brand);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+.mypage__notice-text {
+  font-weight: var(--font-weight-bold);
+}
+
+@media (min-width: 640px) {
+  .mypage__notice {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* ---- 応募・スカウトのカード -------------------------------------------- */
+.mypage__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* 描き直し後にフォーカスを受けたことが分かるよう、カード自体にもフォーカスリングを出す */
+.mypage-item:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.mypage-item__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.mypage-item__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+@media (min-width: 640px) {
+  .mypage-item__head {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.mypage-item__title {
+  min-width: 0;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-tight);
+  overflow-wrap: anywhere;
+}
+
+.mypage-item__link {
+  color: var(--color-foreground);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.mypage-item__link:hover {
+  color: var(--color-primary);
+}
+
+.mypage-item__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.mypage-item__fact {
+  display: flex;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.mypage-item__fact dt {
+  font-weight: var(--font-weight-medium);
+}
+
+.mypage-item__fact dd {
+  overflow-wrap: anywhere;
+}
+
+/* メッセージは利用者の入力。改行を保ち、長い英数字でも枠からはみ出さないようにする */
+.mypage-item__message {
+  padding: var(--space-3);
+  border-left: 3px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-muted);
+  color: var(--color-foreground);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.mypage-item__actions {
+  gap: var(--space-2);
+}
+
+/* スカウトのステータス（応募のステータスは components.css の .badge--applied 等） */
+.mypage .badge--sent {
+  background-color: var(--color-warning);
+  color: var(--color-warning-foreground);
+}
+
+.mypage .badge--read {
+  background-color: var(--color-info);
+  color: var(--color-info-foreground);
+}
+
+.mypage .badge--replied {
+  background-color: var(--color-success);
+  color: var(--color-success-foreground);
+}
+
+/* ---- 案件カードの並び（おすすめ・掲載中） ------------------------------ */
+.mypage__grid {
+  display: grid;
+  /* スマホでは1列、広い画面ではカード幅を保ったまま列を増やす */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+  gap: var(--space-4);
+}

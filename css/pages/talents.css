@@ -1,0 +1,82 @@
+/* ==========================================================================
+   タレント一覧（talents.html）固有のスタイル
+   配置は css/layouts/list.css に任せ、ここではフィルターフォームと結果まわりの見た目だけを足す。
+   ========================================================================== */
+
+.talents-page__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.talents-page__lead {
+  color: var(--color-muted-foreground);
+}
+
+.talents-page__count {
+  font-weight: var(--font-weight-medium);
+}
+
+/* 0件の案内はカード1枚分のマス目に押し込まず、結果エリアの横幅いっぱいに出す */
+.talents-page__grid > .empty-state,
+.talents-page__error {
+  grid-column: 1 / -1;
+}
+
+.talents-page__error {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---- フィルターフォーム（js/components/talent-filter.js） ------------- */
+.talent-filter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.talent-filter__video {
+  align-self: flex-start;
+}
+
+.talent-filter__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.talent-filter__chips {
+  gap: var(--space-2);
+}
+
+.talent-filter__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+/* 640px 以上は選んだ瞬間に結果が変わり、シートを閉じる必要も無いので「この条件で見る」は出さない */
+@media (min-width: 640px) {
+  .talent-filter__submit {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* 差し込み先を行の高さまで伸ばし、中のサイドバーが sticky で追従できる範囲を確保する */
+  .talents-page__sidebar-slot {
+    align-self: stretch;
+  }
+
+  /* スキルの選択肢が多く画面より縦に長くなるため、追従中もサイドバー内でスクロールできるようにする */
+  .talents-page .list-layout__sidebar {
+    max-height: calc(100dvh - var(--header-height) - var(--space-8));
+    overflow-y: auto;
+  }
+}

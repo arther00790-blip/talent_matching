@@ -1,0 +1,219 @@
+/* ==========================================================================
+   タレント詳細（talent.html）固有のスタイル
+   2カラムの配置は css/layouts/detail.css。ここでは動画プレーヤー・写真・プロフィールの見た目を足す。
+   要件 6.6：写真と動画を大きく、実績は時系列で見せる。
+   ========================================================================== */
+
+/* reset.css に [hidden] の指定が無く、display を持つクラスが hidden 属性に勝ってしまうため明示する */
+.talent-detail [hidden] {
+  display: none;
+}
+
+/* 見つからなかったときは2カラムにせず、案内を横幅いっぱいに出す */
+.talent-detail--not-found {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.talent-detail__error {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---- 自己紹介動画（js/components/video-player.js） --------------------- */
+.video-player {
+  /* 自己紹介動画は横長で撮られることが多いので、読み込み前もこの比率で場所を確保してガタつきを防ぐ */
+  --video-aspect: 16 / 9;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.video-player__video {
+  width: 100%;
+  aspect-ratio: var(--video-aspect);
+  border-radius: var(--radius-lg);
+  /* 縦長の動画でも上下左右の余白が背景に溶けず、プレーヤーの枠だと分かる濃い色にする */
+  background-color: var(--color-secondary);
+  object-fit: contain;
+}
+
+.video-player__caption {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.video-player__error {
+  display: grid;
+  place-items: center;
+  aspect-ratio: var(--video-aspect);
+  padding: var(--space-4);
+  border: 1px dashed var(--color-input);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-muted);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+/* ---- 写真ギャラリー ---------------------------------------------------- */
+.talent-gallery__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+/* 1枚目はメインの写真として大きく見せる */
+.talent-gallery__item:first-child {
+  grid-column: 1 / -1;
+}
+
+.talent-gallery__image {
+  width: 100%;
+  aspect-ratio: var(--aspect-portrait);
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+}
+
+/* 写真が無い架空データ用。一覧カードと同じ暖色のグラデーションで、空欄ではなく「未登録」と分かるようにする */
+.talent-gallery__placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: var(--aspect-portrait);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background-image: linear-gradient(160deg, var(--color-accent), var(--color-brand));
+  color: var(--color-brand-foreground);
+  text-align: center;
+}
+
+.talent-gallery__placeholder-text {
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---- プロフィール ------------------------------------------------------ */
+.talent-profile__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.talent-profile__roles {
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.talent-profile__name {
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-tight);
+}
+
+.talent-profile__heading {
+  font-size: var(--font-size-lg);
+}
+
+/* 本人が改行を入れて書いた自己紹介を、そのままの段落感で読めるようにする */
+.talent-profile__bio {
+  white-space: pre-line;
+}
+
+.talent-profile__empty {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.talent-profile__chips,
+.talent-profile__sns {
+  gap: var(--space-2);
+}
+
+.talent-profile__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.talent-profile__fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+}
+
+.talent-profile__fact-label {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-xs);
+}
+
+.talent-profile__fact-value {
+  margin: 0;
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---- 出演実績（時系列） ------------------------------------------------ */
+.talent-timeline {
+  --timeline-line-width: 2px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0 0 0 var(--space-4);
+  /* 縦線で「時間の流れ」を示す */
+  border-left: var(--timeline-line-width) solid var(--color-border);
+  list-style: none;
+}
+
+.talent-timeline__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* 縦線の上の点。線の中央に乗るよう、余白＋線幅の半分＋点の半径だけ左へずらす */
+.talent-timeline__item::before {
+  content: "";
+  position: absolute;
+  top: var(--space-1);
+  left: calc(-1 * (var(--space-4) + var(--timeline-line-width) / 2 + var(--space-2) / 2));
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-full);
+  background-color: var(--color-brand);
+}
+
+.talent-timeline__year {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.talent-timeline__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+@media (min-width: 640px) {
+  .talent-profile__facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .talent-profile__name {
+    font-size: var(--font-size-3xl);
+  }
+}

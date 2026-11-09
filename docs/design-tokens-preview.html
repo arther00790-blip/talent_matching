@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--
+  デザイントークンの目視確認用ページ（開発用。公開ページではない）。
+  page-base.html を骨格のまま保つため、見本はこのファイルに分けている。
+  見本用のスタイルもトークンだけで書き、生の色値は使わない。
+-->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>デザイントークン見本 | StageLink</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/utilities.css">
+
+  <!-- 見本ページ専用。本番の部品は #02 の components.css で作るため、ここでは最小限にとどめる -->
+  <style>
+    .preview-section { padding-block: var(--space-8); }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+      gap: var(--space-4);
+    }
+    .preview-swatch {
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      font-size: var(--font-size-sm);
+    }
+    .preview-swatch code { font-weight: var(--font-weight-bold); }
+    .preview-space-bar {
+      height: var(--space-4);
+      background-color: var(--color-brand);
+      border-radius: var(--radius-sm);
+    }
+    .preview-box {
+      padding: var(--space-6);
+      background-color: var(--color-card);
+      color: var(--color-card-foreground);
+      border: 1px solid var(--color-border);
+    }
+    .preview-button {
+      display: inline-block;
+      padding: var(--space-2) var(--space-6);
+      border: 0;
+      border-radius: var(--radius-full);
+      background-color: var(--color-primary);
+      color: var(--color-primary-foreground);
+      font-weight: var(--font-weight-bold);
+      text-decoration: none;
+      transition: background-color var(--duration-fast) var(--easing-standard);
+    }
+    .preview-button:hover {
+      background-color: var(--color-primary-hover);
+      color: var(--color-primary-foreground);
+    }
+    .preview-input {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--color-input);
+      border-radius: var(--radius-sm);
+      background-color: var(--color-card);
+    }
+  </style>
+</head>
+<body class="bg-background text-foreground">
+  <a href="#main" class="skip-link">本文へスキップ</a>
+
+  <div id="site-header"></div>
+
+  <main id="main" class="container">
+    <section class="preview-section stack" aria-labelledby="heading-colors">
+      <h1 id="heading-colors">デザイントークン見本</h1>
+      <p class="text-muted-foreground">Tab キーを押すと、最初にスキップリンクが表示されます。</p>
+
+      <h2>セマンティックカラー（背景 × 文字）</h2>
+      <div class="preview-grid">
+        <div class="preview-swatch bg-background"><code>background</code><br>本文テキスト</div>
+        <div class="preview-swatch bg-card"><code>card</code><br>カード内テキスト</div>
+        <div class="preview-swatch bg-muted"><code>muted</code><br><span class="text-muted-foreground">補足テキスト</span></div>
+        <div class="preview-swatch bg-primary"><code>primary</code><br>応募する</div>
+        <div class="preview-swatch bg-brand"><code>brand</code><br>装飾・強調面</div>
+        <div class="preview-swatch bg-secondary"><code>secondary</code><br>サブ（ネイビー）</div>
+        <div class="preview-swatch bg-accent"><code>accent</code><br>ホバー・選択中</div>
+        <div class="preview-swatch bg-success"><code>success</code><br>応募が完了しました</div>
+        <div class="preview-swatch bg-warning"><code>warning</code><br>未入力の項目があります</div>
+        <div class="preview-swatch bg-danger"><code>danger</code><br>送信に失敗しました</div>
+        <div class="preview-swatch bg-info"><code>info</code><br>デモ用の架空データです</div>
+      </div>
+
+      <h2>文字色</h2>
+      <p class="text-foreground">foreground：本文の基本色</p>
+      <p class="text-muted-foreground">muted-foreground：日付・補足など</p>
+      <p class="text-primary">primary：強調したい文字</p>
+      <p class="text-success">success / <span class="text-danger">danger</span> / <span class="text-info">info</span></p>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-type">
+      <h2 id="heading-type">見出し階層と本文</h2>
+      <h1>見出し1：あなたの魅力を、動画で届けよう</h1>
+      <h2>見出し2：新着の案件</h2>
+      <h3>見出し3：タレントプロフィール</h3>
+      <h4>見出し4：出演歴</h4>
+      <p>本文：StageLink は、タレントと広告・映像制作会社をつなぐマッチングサイトのデモです。日本語の本文は行間を広めにとり、スマートフォンでも読みやすくしています。</p>
+      <p><small>small：注記や利用規約の補足に使います。</small></p>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-focus">
+      <h2 id="heading-focus">フォーカスリング</h2>
+      <p>Tab キーで移動すると、下の要素に <code>--color-ring</code> の枠が表示されます。</p>
+      <div class="cluster">
+        <a href="#heading-focus">テキストリンク</a>
+        <a href="#heading-focus" class="preview-button">ボタン風リンク</a>
+        <button type="button" class="preview-button">button 要素</button>
+      </div>
+      <label class="stack" style="--stack-space: var(--space-1)">
+        <span>入力欄（枠は <code>--color-input</code>）</span>
+        <input type="text" class="preview-input" placeholder="例：山田 花子">
+      </label>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-shape">
+      <h2 id="heading-shape">角丸・影</h2>
+      <div class="preview-grid">
+        <div class="preview-box" style="border-radius: var(--radius-sm); box-shadow: var(--shadow-sm)">radius-sm / shadow-sm</div>
+        <div class="preview-box" style="border-radius: var(--radius-md); box-shadow: var(--shadow-md)">radius-md / shadow-md</div>
+        <div class="preview-box" style="border-radius: var(--radius-lg); box-shadow: var(--shadow-lg)">radius-lg / shadow-lg（カード）</div>
+      </div>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-space">
+      <h2 id="heading-space">余白スケール（4px 基準）</h2>
+      <div class="stack" style="--stack-space: var(--space-2)">
+        <div class="preview-space-bar" style="width: var(--space-1)"></div>
+        <div class="preview-space-bar" style="width: var(--space-2)"></div>
+        <div class="preview-space-bar" style="width: var(--space-4)"></div>
+        <div class="preview-space-bar" style="width: var(--space-8)"></div>
+        <div class="preview-space-bar" style="width: var(--space-12)"></div>
+        <div class="preview-space-bar" style="width: var(--space-16)"></div>
+      </div>
+      <p class="visually-hidden">上から space-1、2、4、8、12、16 の幅です。</p>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

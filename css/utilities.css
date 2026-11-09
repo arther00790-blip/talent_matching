@@ -1,0 +1,64 @@
+/* ==========================================================================
+   ユーティリティ
+   セマンティックトークンと1対1で対応するクラスだけを置く。
+   「少し薄い色」などの場当たり的な段階クラスを作ると、トークンを経由しない色が
+   増えて一元管理が崩れるため作らない。
+   ========================================================================== */
+
+/* ---- 背景色 ------------------------------------------------------------- */
+/* 背景と文字はセットで使う前提なので、bg-* は対応する foreground も同時に当てる。
+   片方だけ付け忘れてコントラスト不足になる事故を防ぐため */
+.bg-background { background-color: var(--color-background); color: var(--color-foreground); }
+.bg-card { background-color: var(--color-card); color: var(--color-card-foreground); }
+.bg-muted { background-color: var(--color-muted); color: var(--color-foreground); }
+.bg-primary { background-color: var(--color-primary); color: var(--color-primary-foreground); }
+.bg-brand { background-color: var(--color-brand); color: var(--color-brand-foreground); }
+.bg-secondary { background-color: var(--color-secondary); color: var(--color-secondary-foreground); }
+.bg-accent { background-color: var(--color-accent); color: var(--color-accent-foreground); }
+.bg-success { background-color: var(--color-success); color: var(--color-success-foreground); }
+.bg-warning { background-color: var(--color-warning); color: var(--color-warning-foreground); }
+.bg-danger { background-color: var(--color-danger); color: var(--color-danger-foreground); }
+.bg-info { background-color: var(--color-info); color: var(--color-info-foreground); }
+
+/* ---- 文字色 ------------------------------------------------------------- */
+.text-foreground { color: var(--color-foreground); }
+.text-card-foreground { color: var(--color-card-foreground); }
+.text-muted-foreground { color: var(--color-muted-foreground); }
+.text-primary { color: var(--color-primary); }
+.text-primary-foreground { color: var(--color-primary-foreground); }
+.text-secondary { color: var(--color-secondary); }
+.text-secondary-foreground { color: var(--color-secondary-foreground); }
+.text-accent-foreground { color: var(--color-accent-foreground); }
+.text-success { color: var(--color-success); }
+.text-danger { color: var(--color-danger); }
+.text-info { color: var(--color-info); }
+
+/* ---- 枠線 --------------------------------------------------------------- */
+.border { border: 1px solid var(--color-border); }
+.border-input { border: 1px solid var(--color-input); }
+
+/* ---- レイアウト補助 ----------------------------------------------------- */
+/* 横幅の上限と左右の余白をそろえ、全ページで本文の端位置を一致させる */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* 子要素どうしの縦の間隔を親で一括管理する（子に margin を付けて回る必要をなくす）。
+   間隔は --stack-space で上書きできる */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-space, var(--space-4));
+}
+
+/* タグ・ボタン群など、横並びで幅が足りなければ自然に折り返すまとまり。
+   間隔は --cluster-space で上書きできる */
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cluster-space, var(--space-2));
+}

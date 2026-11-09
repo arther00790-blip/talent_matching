@@ -1,0 +1,70 @@
+/* ==========================================================================
+   ダッシュボードレイアウト（mypage.html）
+   タブ（role="tablist"）でセクションを切り替える。タブが多くてもスマホで折り返さず、横スクロールで並べる。
+   ========================================================================== */
+
+.dashboard-layout {
+  padding-block: var(--space-6) var(--space-8);
+}
+
+.dashboard-layout__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+/* ---- タブ ---------------------------------------------------------------- */
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-6);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--color-border);
+  /* スクロールバーで下線とタブが重ならないよう、細くする（対応ブラウザのみ） */
+  scrollbar-width: thin;
+}
+
+.tabs__tab {
+  flex-shrink: 0;
+  /* 選択中の下線を、タブ列の下線にぴったり重ねる */
+  margin-bottom: -1px;
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background-color: transparent;
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tabs__tab:hover {
+  color: var(--color-foreground);
+}
+
+/* 選択中は色に加えて下線で示す（WCAG 1.4.1） */
+.tabs__tab[aria-selected="true"] {
+  border-bottom-color: var(--color-primary);
+  color: var(--color-foreground);
+  font-weight: var(--font-weight-bold);
+}
+
+.dashboard-layout__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.dashboard-layout__panel[hidden] {
+  display: none;
+}
+
+.dashboard-layout__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}

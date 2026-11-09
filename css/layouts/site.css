@@ -1,0 +1,265 @@
+/* ==========================================================================
+   サイト全体の配置（ヘッダー・フッター・<main>）
+   全ページで読み込む。ページの種類ごとの配置は list / detail / form / dashboard / static に分ける。
+   ブレークポイント：〜1023px はハンバーガー、1024px〜 はナビを横並び
+   （ナビ最大6項目＋ロール切替が 640px 幅では1行に収まらないため、lg で切り替える）
+   ========================================================================== */
+
+/* 内容が少ないページでもフッターを画面下端に置き、ページの終わりを分かりやすくする */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+/* ---- ヘッダー ----------------------------------------------------------- */
+/* 差し込み先の div ごと固定する（.site-header 側で sticky にすると、親の高さ内でしか効かないため） */
+#site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+}
+
+.site-header {
+  position: relative;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-background);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--header-height);
+}
+
+.site-header__logo {
+  margin-right: auto;
+  color: var(--color-foreground);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-header__logo:hover {
+  color: var(--color-primary);
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.site-header__role {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.site-header__role-select {
+  min-height: 2.5rem;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-input);
+  border-radius: var(--radius-md);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-size: var(--font-size-sm);
+}
+
+/* タップしやすさのため 44px 四方を確保（WCAG 2.5.5 の推奨サイズ） */
+.site-header__menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-foreground);
+  cursor: pointer;
+}
+
+.site-header__menu-button:hover {
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+/* 三本線。画像を使わず currentColor で描くので、ホバー色にも追従する */
+.site-header__menu-icon,
+.site-header__menu-icon::before,
+.site-header__menu-icon::after {
+  display: block;
+  width: 1.25rem;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background-color: currentColor;
+  transition: transform var(--duration-fast) var(--easing-standard);
+}
+
+.site-header__menu-icon {
+  position: relative;
+}
+
+.site-header__menu-icon::before,
+.site-header__menu-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+
+.site-header__menu-icon::before { top: -6px; }
+.site-header__menu-icon::after { top: 6px; }
+
+/* 開いているときは × にして、同じボタンで閉じられることを示す */
+.site-header--menu-open .site-header__menu-icon { background-color: transparent; }
+.site-header--menu-open .site-header__menu-icon::before { transform: translateY(6px) rotate(45deg); }
+.site-header--menu-open .site-header__menu-icon::after { transform: translateY(-6px) rotate(-45deg); }
+
+/* スマホ・タブレット：ナビはヘッダー直下に開くパネル */
+.site-header__nav {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  box-shadow: var(--shadow-md);
+}
+
+.site-header--menu-open .site-header__nav {
+  display: block;
+}
+
+.site-header__list {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2) var(--container-padding);
+}
+
+.site-header__link {
+  display: block;
+  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius-md);
+  color: var(--color-foreground);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+}
+
+.site-header__link:hover {
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+/* 現在地は色だけでなく下線でも示す（WCAG 1.4.1） */
+.site-header__link[aria-current="page"] {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.4em;
+}
+
+/* ホバーの accent 面では primary 文字が 4.2:1 で AA に届かないため、.button--outline:hover と同じく primary-hover にする */
+.site-header__link[aria-current="page"]:hover {
+  color: var(--color-primary-hover);
+}
+
+/* 通知バッジ（M-02）。件数は数字で示し、意味はリンク・ボタンの読み上げ文言で伝える */
+.site-header__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  margin-left: var(--space-1);
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-full);
+  background-color: var(--color-brand);
+  color: var(--color-brand-foreground);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* メニューボタンでは三本線に重ねて右上に置く */
+.site-header__menu-button {
+  position: relative;
+}
+
+.site-header__menu-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-left: 0;
+}
+
+@media (min-width: 1024px) {
+  .site-header__nav {
+    display: block;
+    position: static;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .site-header__list {
+    flex-direction: row;
+    gap: var(--space-1);
+    padding: 0;
+  }
+
+  .site-header__link {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+  }
+
+  .site-header__menu-button {
+    display: none;
+  }
+}
+
+/* ---- フッター ----------------------------------------------------------- */
+.site-footer {
+  margin-top: var(--space-16);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-muted);
+  color: var(--color-muted-foreground);
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-block: var(--space-8);
+}
+
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+}
+
+.site-footer__link {
+  color: var(--color-foreground);
+  font-size: var(--font-size-sm);
+}
+
+/* デモであることを見落とされないよう、左罫線付きの枠で本文から区別する */
+.site-footer__notice {
+  padding: var(--space-3) var(--space-4);
+  border-left: 4px solid var(--color-warning);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-size: var(--font-size-sm);
+}

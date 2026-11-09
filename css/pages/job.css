@@ -1,0 +1,213 @@
+/* ==========================================================================
+   案件詳細（job.html）固有のスタイル
+   案件には写真・動画が無いので detail-layout の2カラム（メディア＋情報）は使わず、
+   〜1023px：見出し → 応募の概要 → 本文 の縦積み
+   1024px〜：左に見出しと本文、右に応募の概要（追従）。長い本文を読みながらいつでも応募できるようにする
+   ========================================================================== */
+
+/* reset.css に [hidden] の指定が無く、display を持つクラスが hidden 属性に勝ってしまうため明示する */
+.job-detail [hidden] {
+  display: none;
+}
+
+.job-detail__body {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "summary"
+    "main";
+  gap: var(--space-6);
+}
+
+.job-detail__body--not-found {
+  display: flex;
+  flex-direction: column;
+}
+
+.job-detail__error {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---- 見出し ------------------------------------------------------------ */
+.job-detail__header {
+  grid-area: header;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.job-detail__badges {
+  gap: var(--space-2);
+}
+
+.job-detail__title {
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-tight);
+  overflow-wrap: anywhere;
+}
+
+.job-detail__company {
+  color: var(--color-muted-foreground);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---- 本文 -------------------------------------------------------------- */
+.job-detail__main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  min-width: 0;
+}
+
+.job-detail__heading {
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-lg);
+}
+
+.job-detail__text {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.job-detail__company-name {
+  font-weight: var(--font-weight-bold);
+}
+
+/* 6.6「この案件に向いている人」。タレントが自分ごととして読めるよう、チェック記号付きの箇条書きにする */
+/* reset.css の ul[role="list"]（padding: 0・黒丸なし）より詳細度を上げて内側の余白を効かせる */
+.job-detail .job-detail__suitable {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-muted);
+}
+
+.job-detail__suitable-item {
+  position: relative;
+  padding-left: var(--space-6);
+}
+
+.job-detail__suitable-item::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--color-brand);
+  font-weight: var(--font-weight-bold);
+}
+
+/* ---- 項目と値の一覧（条件・スケジュール・報酬） ------------------------- */
+.job-facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.job-facts__row {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: var(--space-3);
+}
+
+.job-facts__label {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.job-facts__value {
+  overflow-wrap: anywhere;
+}
+
+/* ---- 応募の概要（報酬・日程・応募／お気に入り） ------------------------- */
+.job-summary {
+  grid-area: summary;
+  min-width: 0;
+}
+
+/* カードの浮き上がりは「押せるカード」の合図なので、操作の入れ物である概要カードでは付けない */
+.job-summary:hover,
+.job-summary:focus-within {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.job-summary__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.job-summary__facts .job-facts__value {
+  font-weight: var(--font-weight-medium);
+}
+
+.job-summary__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* スマホでは押しやすいよう横幅いっぱいにする */
+.job-summary__actions .button {
+  width: 100%;
+}
+
+.apply-button__reason {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.favorite-button__icon {
+  color: var(--color-brand);
+}
+
+/* ---- 応募ダイアログ（js/components/apply-dialog.js） ------------------ */
+.apply-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.apply-dialog__job {
+  overflow-wrap: anywhere;
+}
+
+.apply-dialog__message {
+  resize: vertical;
+}
+
+.apply-dialog__count {
+  text-align: right;
+}
+
+.apply-dialog__count--over {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+}
+
+@media (min-width: 1024px) {
+  .job-detail__body {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-areas:
+      "header summary"
+      "main summary";
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    gap: var(--space-6) var(--space-8);
+  }
+
+  .job-detail__title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .job-summary {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+  }
+}

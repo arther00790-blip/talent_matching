@@ -1,0 +1,67 @@
+/* ==========================================================================
+   詳細レイアウト（talent.html / job.html）
+   〜1023px：メディア（写真・動画）→ 情報 の縦積み
+   1024px〜：メディア左・情報右の2カラム。長い情報を読む間も写真が見えるよう、メディア側を追従させる
+   ========================================================================== */
+
+.detail-layout {
+  padding-block: var(--space-6) var(--space-8);
+}
+
+.detail-layout__back {
+  display: inline-block;
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-sm);
+}
+
+.detail-layout__body {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.detail-layout__media {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.detail-layout__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.detail-layout__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* 応募・スカウト等のボタン群。スマホでは押しやすいよう横幅いっぱいにする */
+.detail-layout__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+@media (min-width: 640px) {
+  .detail-layout__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* 写真は縦長なので情報側を広くとり、本文が1行に間延びしない比率にする */
+  .detail-layout__body {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: start;
+  }
+
+  .detail-layout__media {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+  }
+}

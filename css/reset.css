@@ -1,0 +1,91 @@
+/* ==========================================================================
+   リセット
+   ブラウザ間の既定スタイル差を消し、レイアウトをトークンだけで組めるようにする。
+   見た目（色・フォント）はここでは決めず base.css に任せる。
+   ========================================================================== */
+
+/* padding・border を含めた幅で計算した方が、カードやグリッドの幅指定が直感どおりになる */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 余白はすべて .stack などトークン経由で付けるため、既定の margin を消す */
+* {
+  margin: 0;
+}
+
+html {
+  /* iOS の横向きで文字が勝手に拡大されるのを防ぐ */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* インライン扱いだと下に謎の隙間ができ、写真主役のカードで崩れるためブロック化する */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+/* フォーム部品はフォント指定を継承しないのが既定なので、本文と揃える */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* 長い英単語・URL がスマホ幅をはみ出さないようにする */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+  padding: 0;
+}
+
+/* 動きで気分が悪くなる利用者のため、OS 設定に従ってアニメーションを実質無効化する。
+   0 にすると transitionend 等のイベントが発火しない実装があるため、ごく短い値にしている */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

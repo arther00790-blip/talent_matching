@@ -1,0 +1,145 @@
+/* ==========================================================================
+   ベーススタイル（要素レベル）
+   クラスを付けなくても全ページで同じ読み心地になるよう、要素の既定値だけを決める。
+   部品の見た目（ボタン・カード等）は #02 の components.css に任せる。
+   ========================================================================== */
+
+html {
+  /* 固定ヘッダーの下にアンカー先が隠れないよう、ジャンプ位置をヘッダー分ずらす */
+  scroll-padding-top: var(--header-height);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+/* ---- 見出し ------------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  /* 日本語見出しの末尾1文字だけが改行されるのを防ぐ（対応ブラウザのみ） */
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--font-size-2xl);
+}
+
+h2 {
+  font-size: var(--font-size-xl);
+}
+
+h3 {
+  font-size: var(--font-size-lg);
+}
+
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-base);
+}
+
+/* スマホでは画面幅が狭いので見出しを一段小さくし、640px 以上で本来の大きさにする */
+@media (min-width: 640px) {
+  h1 {
+    font-size: var(--font-size-3xl);
+  }
+
+  h2 {
+    font-size: var(--font-size-2xl);
+  }
+
+  h3 {
+    font-size: var(--font-size-xl);
+  }
+}
+
+/* ---- 本文 --------------------------------------------------------------- */
+small {
+  font-size: var(--font-size-sm);
+}
+
+strong,
+b {
+  font-weight: var(--font-weight-bold);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+/* ---- リンク ------------------------------------------------------------- */
+/* 色だけでリンクと判別させないよう下線を残す（WCAG 1.4.1） */
+a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color var(--duration-fast) var(--easing-standard);
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+/* ---- フォーカスリング --------------------------------------------------- */
+/* マウス操作では出さず、キーボード操作時だけ現在位置をはっきり示す */
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---- スクリーンリーダー専用テキスト ------------------------------------ */
+/* display:none だと読み上げからも消えるため、見た目だけ 1px に畳んで隠す */
+.visually-hidden,
+.skip-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- スキップリンク ----------------------------------------------------- */
+/* キーボード利用者がヘッダーのナビを飛ばして本文へ行けるよう、フォーカス時だけ表示する */
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-toast);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-secondary);
+  color: var(--color-secondary-foreground);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.skip-link:hover {
+  color: var(--color-secondary-foreground);
+}

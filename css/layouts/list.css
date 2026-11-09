@@ -1,0 +1,76 @@
+/* ==========================================================================
+   一覧レイアウト（talents.html / jobs.html）
+   〜639px    ：フィルターはボトムシート（components.css の .bottom-sheet）、カード1列
+   640〜1023px：フィルターを結果の上に常時表示、カード2列
+   1024px〜   ：左サイドバー（追従）＋カードグリッド
+   ========================================================================== */
+
+.list-layout {
+  --list-sidebar-width: 16rem;
+  /* カード（縦長写真）が潰れない最小幅。これを下回る列数にはしない */
+  --list-card-min: 14rem;
+
+  padding-block: var(--space-6) var(--space-8);
+}
+
+.list-layout__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.list-layout__body {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.list-layout__filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.list-layout__results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+/* 件数・並び替えの行 */
+.list-layout__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.list-layout__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--list-card-min), 1fr));
+  gap: var(--space-4);
+}
+
+/* タブレット幅：サイドに並べると結果が1列に痩せるため、フィルターは上に置き追従させない */
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .list-layout__sidebar {
+    position: static;
+  }
+}
+
+@media (min-width: 1024px) {
+  .list-layout__body {
+    grid-template-columns: var(--list-sidebar-width) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .list-layout__grid {
+    gap: var(--space-6);
+  }
+}

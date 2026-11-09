@@ -1,0 +1,154 @@
+/* ==========================================================================
+   静的ページ固有（about / faq / terms / privacy / 404）
+   配置（本文幅・見出しの余白）は layouts/static.css。ここは各ページの部品だけを持つ。
+   ========================================================================== */
+
+/* ---- 注記（規約・ポリシーの「ダミー文面です」など） ------------------- */
+/* 本文と取り違えないよう、面の色と枠で本文から切り離す */
+.static-notice {
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-muted);
+  color: var(--color-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.static-notice__title {
+  font-weight: var(--font-weight-bold);
+}
+
+/* ---- 利用ステップ（About） --------------------------------------------- */
+/* layouts/static.css の「本文中の ol は数字付き」を、番号バッジ付きの手順に置き換える */
+.static-layout__body .static-steps {
+  display: grid;
+  gap: var(--space-4);
+  padding-left: 0;
+  list-style: none;
+}
+
+.static-layout__body .static-step {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+}
+
+.static-step__number {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: var(--space-10);
+  height: var(--space-10);
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  font-weight: var(--font-weight-bold);
+}
+
+.static-step__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.static-step__title {
+  font-size: var(--font-size-base);
+}
+
+.static-step__text {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+/* ---- ページ末尾の行動ボタン群（About / 404） --------------------------- */
+.static-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* ---- FAQ（details / summary のアコーディオン） ------------------------- */
+.faq-list {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.faq-item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+}
+
+.faq-item__question {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  list-style: none;
+}
+
+/* 既定の三角マーカーはブラウザごとに形と位置が違うため消し、開閉を「＋／−」で示す */
+.faq-item__question::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item__question::after {
+  content: "＋";
+  margin-left: auto;
+  color: var(--color-primary);
+}
+
+.faq-item[open] > .faq-item__question::after {
+  content: "−";
+}
+
+.faq-item__question:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-ring);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-md);
+}
+
+.faq-item__answer {
+  padding: 0 var(--space-4) var(--space-4);
+  color: var(--color-muted-foreground);
+}
+
+.faq-item__answer > * + * {
+  margin-top: var(--space-2);
+}
+
+/* ---- 404 ------------------------------------------------------------- */
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+/* 「404」は飾りの大きな数字。読み上げは h1 の文言に任せる（HTML 側で aria-hidden） */
+.not-found__code {
+  color: var(--color-primary);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+/* 見出し群の下余白（layouts/static.css）と .not-found の gap が重なって間延びしないようにする */
+.not-found .static-layout__header {
+  margin-bottom: 0;
+}
+
+@media (min-width: 640px) {
+  .static-layout__body .static-step {
+    padding: var(--space-5);
+  }
+}

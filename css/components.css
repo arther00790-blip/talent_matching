@@ -1,0 +1,714 @@
+/* ==========================================================================
+   共通UIコンポーネント（#02）
+   --------------------------------------------------------------------------
+   色・余白・角丸・影・モーションはすべて variables.css のトークン経由で指定する。
+   生の色値やプリミティブ（パレット）をここで参照すると、トークンでの一括調整とコントラスト検証が効かなくなるため。
+   クラス名は BEM 風（block__element--modifier）。
+   ========================================================================== */
+
+/* ---- ボタン ------------------------------------------------------------- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  /* 指で押しやすい高さ（40px）を確保する */
+  min-height: var(--space-10);
+  padding: var(--space-2) var(--space-6);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-fast) var(--easing-standard),
+    border-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard);
+}
+
+/* a.button のときに base.css の a:hover の文字色が勝たないよう、各 variant の :hover でも色を指定する */
+.button--primary,
+.button--primary:hover {
+  color: var(--color-primary-foreground);
+}
+.button--primary { background-color: var(--color-primary); }
+.button--primary:hover { background-color: var(--color-primary-hover); }
+
+.button--secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-secondary-foreground);
+}
+.button--secondary:hover {
+  background-color: var(--color-secondary-hover);
+  color: var(--color-secondary-foreground);
+}
+
+.button--outline {
+  background-color: var(--color-card);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+/* accent 面の上では primary 文字のコントラストが足りないため、ホバー時は primary-hover にする */
+.button--outline:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-primary-hover);
+  color: var(--color-primary-hover);
+}
+
+.button--ghost {
+  background-color: transparent;
+  color: var(--color-foreground);
+}
+.button--ghost:hover {
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+.button--danger {
+  background-color: var(--color-danger);
+  color: var(--color-danger-foreground);
+}
+.button--danger:hover {
+  background-color: var(--color-danger-hover);
+  color: var(--color-danger-foreground);
+}
+
+.button--sm {
+  min-height: var(--space-8);
+  padding: var(--space-1) var(--space-4);
+  font-size: var(--font-size-sm);
+}
+
+.button--lg {
+  min-height: var(--space-12);
+  padding: var(--space-3) var(--space-8);
+  font-size: var(--font-size-lg);
+}
+
+/* 押せないことを薄さ（不透明度）ではなく面の色で示し、文字のコントラストを保つ */
+.button:disabled,
+.button[aria-disabled="true"],
+.button:disabled:hover,
+.button[aria-disabled="true"]:hover {
+  background-color: var(--color-muted);
+  border-color: var(--color-border);
+  color: var(--color-muted-foreground);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* ---- カード ------------------------------------------------------------- */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard);
+}
+
+/* キーボードでリンクにフォーカスしたときも、マウスのホバーと同じ浮き上がりを見せる */
+.card:hover,
+.card:focus-within {
+  transform: translateY(calc(var(--space-1) * -1));
+  box-shadow: var(--shadow-md);
+}
+
+.card__media {
+  position: relative;
+  background-color: var(--color-muted);
+}
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+/* 見出しのリンクをカード全体に広げ、どこを押しても詳細へ行けるようにする（リンク名は見出しだけになる） */
+.card__link {
+  color: inherit;
+  text-decoration: none;
+}
+.card__link:hover { color: var(--color-primary); }
+.card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+/* ::after が広がっているので、フォーカスリングはカードの外枠に出す */
+.card__link:focus-visible { outline: none; }
+.card:has(.card__link:focus-visible) {
+  outline: var(--focus-ring-width) solid var(--color-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ---- タレントカード（写真が主役） -------------------------------------- */
+.talent-card__media {
+  /* カード面積の大半を写真に使う */
+  aspect-ratio: var(--aspect-portrait);
+}
+
+.talent-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.talent-card__placeholder {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  /* 実在人物の写真を使わないための代替。ブランドの暖色で明るい印象を保つ */
+  background-image: linear-gradient(160deg, var(--color-accent), var(--color-brand));
+  color: var(--color-card);
+}
+
+/* シルエットが写真枠の中央に「人がいる」と分かる大きさで収まる比率 */
+.talent-card__placeholder-icon {
+  width: 45%;
+  height: auto;
+}
+
+.talent-card__badges {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  display: flex;
+  gap: var(--space-1);
+}
+
+.talent-card__name {
+  font-size: var(--font-size-lg);
+}
+
+.talent-card__meta {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.talent-card__skills {
+  --cluster-space: var(--space-1);
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- 案件カード -------------------------------------------------------- */
+.job-card__body { gap: var(--space-3); }
+
+.job-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.job-card__tags { --cluster-space: var(--space-1); }
+
+/* 相性バッジが無いカードでもタイトルの位置がそろうよう、枠の高さを確保しておく */
+.job-card__match {
+  flex-shrink: 0;
+  min-height: var(--space-6);
+}
+
+.job-card__title {
+  font-size: var(--font-size-lg);
+}
+
+.job-card__company {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.job-card__details {
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+}
+
+.job-card__detail {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.job-card__detail dt {
+  flex-shrink: 0;
+  /* 最長の項目名「撮影日」（3文字）に合わせ、値の開始位置を縦にそろえる */
+  min-width: 3em;
+  color: var(--color-muted-foreground);
+}
+
+.job-card--closed .job-card__title { color: var(--color-muted-foreground); }
+
+/* ---- バッジ ------------------------------------------------------------- */
+/* どのバッジも必ずテキストを持つ。色はあくまで補助（要件 3.5） */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+}
+
+.badge--video {
+  background-color: var(--color-secondary);
+  color: var(--color-secondary-foreground);
+}
+
+.badge--match-great {
+  background-color: var(--color-brand);
+  color: var(--color-brand-foreground);
+}
+
+/* accent は白いカードとの差が小さいので、枠線で面の境界を補う */
+.badge--match-good {
+  background-color: var(--color-accent);
+  border-color: var(--color-brand);
+  color: var(--color-accent-foreground);
+}
+
+.badge--applied {
+  background-color: var(--color-info);
+  color: var(--color-info-foreground);
+}
+
+.badge--reviewing {
+  background-color: var(--color-warning);
+  color: var(--color-warning-foreground);
+}
+
+.badge--accepted {
+  background-color: var(--color-success);
+  color: var(--color-success-foreground);
+}
+
+.badge--declined,
+.badge--closed {
+  background-color: var(--color-muted);
+  border-color: var(--color-border);
+  color: var(--color-muted-foreground);
+}
+
+/* ---- フォーム ----------------------------------------------------------- */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.form-field__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--font-weight-medium);
+}
+
+/* 「*」だけでは意味が伝わらないため、「必須」という文字で示す */
+.form-field__required {
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-danger);
+  color: var(--color-danger-foreground);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.form-field__input {
+  width: 100%;
+  min-height: var(--space-10);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-input);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+}
+
+textarea.form-field__input {
+  min-height: calc(var(--space-16) * 2);
+  resize: vertical;
+}
+
+.form-field__input::placeholder { color: var(--color-muted-foreground); }
+
+/* エラーは色だけでなく枠の太さも変え、.form-field__error の文言でも伝える */
+.form-field__input[aria-invalid="true"] {
+  border-color: var(--color-danger);
+  border-width: 2px;
+}
+
+.form-field__help {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.form-field__error {
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---- チップ／タグ ------------------------------------------------------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: var(--color-muted);
+  color: var(--color-foreground);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-tight);
+}
+
+.chip--sm {
+  padding: 0 var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+/* 選択可能なフィルター：<label class="chip chip--selectable"><input type="checkbox" class="chip__input">…</label>
+   または <button class="chip chip--selectable" aria-pressed="false"> の形で使う */
+.chip--selectable {
+  position: relative;
+  min-height: var(--space-8);
+  border-color: var(--color-input);
+  background-color: var(--color-card);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--easing-standard);
+}
+
+.chip--selectable:hover { background-color: var(--color-accent); }
+
+/* チェックボックス本体は見えなくするが、フォーカスと状態はラベル側に表示する */
+.chip__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip--selectable:has(.chip__input:focus-visible) {
+  outline: var(--focus-ring-width) solid var(--color-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* 選択中は色に加えて ✓ を出し、色の違いが分からなくても状態が伝わるようにする */
+.chip--selectable:has(.chip__input:checked),
+.chip--selectable[aria-pressed="true"] {
+  border-color: var(--color-primary);
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+  font-weight: var(--font-weight-bold);
+}
+
+.chip--selectable:has(.chip__input:checked)::before,
+.chip--selectable[aria-pressed="true"]::before {
+  content: "✓";
+}
+
+/* ---- トースト ----------------------------------------------------------- */
+.toast-region {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  left: var(--space-4);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  /* 領域自体は透明な箱なので、下にあるページのクリックを妨げない */
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: var(--toast-max-width);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  pointer-events: auto;
+  animation: toast-in var(--duration-normal) var(--easing-standard);
+  transition:
+    opacity var(--duration-normal) var(--easing-standard),
+    transform var(--duration-normal) var(--easing-standard);
+}
+
+.toast--success { background-color: var(--color-success); color: var(--color-success-foreground); }
+.toast--error { background-color: var(--color-danger); color: var(--color-danger-foreground); }
+.toast--info { background-color: var(--color-info); color: var(--color-info-foreground); }
+
+.toast--leaving {
+  opacity: 0;
+  transform: translateY(var(--space-2));
+}
+
+.toast__icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: var(--space-6);
+  height: var(--space-6);
+  border: 2px solid currentColor;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.toast__message {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.toast__close {
+  flex-shrink: 0;
+  min-width: var(--space-8);
+  min-height: var(--space-8);
+  border: 0;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: inherit;
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-tight);
+}
+
+/* 濃い面の上では既定のコーラルのリングが見えにくいため、文字と同じ色のリングにする */
+.toast__close:focus-visible { outline-color: currentColor; }
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-4));
+  }
+}
+
+@media (min-width: 640px) {
+  .toast-region {
+    left: auto;
+    align-items: flex-end;
+  }
+}
+
+/* ---- ダイアログ --------------------------------------------------------- */
+.dialog {
+  /* スマホでは左右に余白を残し、PC では読みやすい幅で止める */
+  width: min(100% - var(--space-8), var(--dialog-max-width));
+  max-height: calc(100dvh - var(--space-8));
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+  box-shadow: var(--shadow-lg);
+}
+
+.dialog[open] {
+  animation: dialog-in var(--duration-normal) var(--easing-standard);
+}
+
+.dialog::backdrop {
+  background-color: var(--color-overlay);
+}
+
+.dialog__header { padding: var(--space-6) var(--space-6) 0; }
+
+.dialog__title { font-size: var(--font-size-xl); }
+
+.dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+}
+
+.dialog__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: 0 var(--space-6) var(--space-6);
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-4));
+  }
+}
+
+/* ---- ボトムシート ------------------------------------------------------- */
+/* モバイルファースト：既定は「下から出るシート」、640px 以上でサイドに常時表示する */
+.bottom-sheet {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--z-sheet);
+  max-height: var(--sheet-max-height);
+  padding: var(--space-6) var(--space-4);
+  overflow-y: auto;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(100%);
+  /* 閉じている間は Tab で中に入れないよう visibility で隠す（スライドが終わってから隠す） */
+  visibility: hidden;
+  transition:
+    transform var(--duration-normal) var(--easing-standard),
+    visibility 0s linear var(--duration-normal);
+}
+
+.bottom-sheet--open {
+  transform: none;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.bottom-sheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.bottom-sheet__title { font-size: var(--font-size-lg); }
+
+.bottom-sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  /* シートのすぐ下に重ねる。z-index の数値を直書きしないよう、トークンから計算する */
+  z-index: calc(var(--z-sheet) - 1);
+  background-color: var(--color-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--duration-normal) var(--easing-standard),
+    visibility 0s linear var(--duration-normal);
+}
+
+.bottom-sheet__backdrop--open {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+@media (min-width: 640px) {
+  .bottom-sheet {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+    z-index: auto;
+    max-height: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transform: none;
+    visibility: visible;
+    transition: none;
+  }
+
+  /* PC 幅では常に見えているので、開閉ボタン・閉じるボタン・背面は不要 */
+  .bottom-sheet__trigger,
+  .bottom-sheet__close,
+  .bottom-sheet__backdrop {
+    display: none;
+  }
+}
+
+/* ---- スケルトン --------------------------------------------------------- */
+.skeleton-card {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-card);
+}
+
+.skeleton-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.skeleton {
+  border-radius: var(--radius-sm);
+  background-color: var(--color-muted);
+  animation: skeleton-pulse var(--duration-slow) var(--easing-standard) infinite alternate;
+}
+
+/* タレントカードと同じ比率にして、描画後にレイアウトが跳ねないようにする */
+.skeleton--media {
+  border-radius: 0;
+  aspect-ratio: var(--aspect-portrait);
+}
+
+.skeleton--text { height: var(--space-4); }
+/* 2行目を短くして「文章の行」らしく見せる */
+.skeleton--short { width: 60%; }
+
+@keyframes skeleton-pulse {
+  to { background-color: var(--color-border); }
+}
+
+/* ---- 空状態 ------------------------------------------------------------- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-12) var(--space-4);
+  border: 1px dashed var(--color-input);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+  text-align: center;
+}
+
+.empty-state__icon {
+  width: var(--space-12);
+  height: var(--space-12);
+  color: var(--color-brand);
+}
+
+.empty-state__message {
+  max-width: 32rem;
+  color: var(--color-muted-foreground);
+}
+
+/* ---- 動きを減らす設定 --------------------------------------------------- */
+/* reset.css は時間を極小にするだけなので、点滅の繰り返しと浮き上がりの移動はここで明示的に止める */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton,
+  .toast,
+  .dialog[open] {
+    animation: none;
+  }
+
+  .card:hover,
+  .card:focus-within {
+    transform: none;
+  }
+}

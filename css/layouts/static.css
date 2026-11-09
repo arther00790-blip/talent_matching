@@ -1,0 +1,57 @@
+/* ==========================================================================
+   静的ページレイアウト（about / faq / terms / privacy / 404）
+   日本語の長文は1行が長すぎると次の行頭を見失いやすいため、1行あたり約40字の本文幅にする。
+   ========================================================================== */
+
+.static-layout {
+  /* 16px の日本語で 1行 約40字 */
+  --static-max-width: 42rem;
+
+  width: 100%;
+  max-width: calc(var(--static-max-width) + var(--container-padding) * 2);
+  margin-inline: auto;
+  padding: var(--space-8) var(--container-padding);
+}
+
+.static-layout__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+
+.static-layout__lead {
+  color: var(--color-muted-foreground);
+}
+
+/* 本文：reset.css で余白を消しているので、要素間の間隔をここで与える */
+.static-layout__body > * + * {
+  margin-top: var(--space-4);
+}
+
+.static-layout__body > h2 {
+  margin-top: var(--space-10);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.static-layout__body > h3 {
+  margin-top: var(--space-8);
+}
+
+.static-layout__body ul,
+.static-layout__body ol {
+  padding-left: 1.5em;
+}
+
+.static-layout__body ul {
+  list-style: disc;
+}
+
+.static-layout__body ol {
+  list-style: decimal;
+}
+
+.static-layout__body li + li {
+  margin-top: var(--space-2);
+}

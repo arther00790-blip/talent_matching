@@ -1,0 +1,392 @@
+/* ==========================================================================
+   トップページ（index.html）固有のスタイル
+   色・余白はトークンのみを使う。タブ（js/components/tabs.js）を使うのは現状トップだけなので、
+   見た目もここに置く（他ページで使うときに components.css へ移す）。
+   ブレークポイント：〜639px 1列 / 640px〜 2列 / 1024px〜 3列
+   ========================================================================== */
+
+.top-page {
+  /* 横スクロールのカード幅。スマホでも次のカードが少し覗き、横に続くことが分かる幅にする */
+  --top-scroller-card: min(15rem, 72%);
+  --top-icon-size: var(--space-16);
+  --top-step-number: var(--space-10);
+}
+
+/* ---- セクション共通 ---------------------------------------------------- */
+.top-section {
+  padding-block: var(--space-12);
+}
+
+/* 背景を交互に変え、セクションの切れ目を余白だけに頼らず分かるようにする */
+.top-section--muted {
+  background-color: var(--color-muted);
+  color: var(--color-foreground);
+}
+
+.top-section__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.top-section__more {
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+}
+
+.top-section__hint {
+  margin-top: calc(var(--space-4) * -1);
+  margin-bottom: var(--space-4);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.top-page__error {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---- 1. ヒーロー ------------------------------------------------------- */
+.top-hero {
+  padding-block: var(--space-12) var(--space-16);
+  /* 写真素材を使わずに明るい印象を出すため、ブランドの淡い暖色から背景色へ流す */
+  background-image: linear-gradient(170deg, var(--color-accent), var(--color-background));
+  color: var(--color-foreground);
+}
+
+.top-hero__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.top-hero__eyebrow {
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+/* スマホでは「らし／さ」のような語の途中の改行を避けるため、1行に句点まで収まる大きさにする。
+   対応ブラウザでは文節単位で折り返させる */
+.top-hero__title {
+  font-size: var(--font-size-2xl);
+  word-break: auto-phrase;
+}
+
+/* 狭い画面では句読点の位置で自然に折り返させ、強制改行は PC だけにする */
+.top-hero__break {
+  display: none;
+}
+
+.top-hero__lead {
+  max-width: 40rem;
+  font-size: var(--font-size-lg);
+}
+
+.top-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.top-hero__note {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+/* ---- 2. サービスの特徴 ------------------------------------------------- */
+.top-features {
+  display: grid;
+  gap: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+.top-feature {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+  box-shadow: var(--shadow-sm);
+}
+
+/* アイコンは currentColor で描いているので、ここの color だけでトークンに従う */
+.top-feature__icon {
+  display: grid;
+  place-items: center;
+  width: var(--top-icon-size);
+  height: var(--top-icon-size);
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+}
+
+.top-feature__icon svg {
+  width: 60%;
+  height: auto;
+}
+
+.top-feature__text {
+  color: var(--color-muted-foreground);
+}
+
+/* ---- 3. 注目のタレント（横スクロール） --------------------------------- */
+.top-scroller {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  /* カードのホバー時の浮き上がりとフォーカスリングが、スクロール領域の端で切れないよう内側に余白を取る */
+  padding: var(--space-2) var(--space-1) var(--space-4);
+  border-radius: var(--radius-lg);
+}
+
+.top-scroller > * {
+  flex: 0 0 var(--top-scroller-card);
+  scroll-snap-align: start;
+}
+
+/* 空状態・エラーはカード幅に押し込まず、領域の幅いっぱいに出す */
+.top-scroller > .empty-state,
+.top-scroller > .top-page__error {
+  flex-basis: 100%;
+}
+
+/* ---- 4. 新着案件 ------------------------------------------------------- */
+.top-jobs {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.top-jobs > .empty-state,
+.top-jobs > .top-page__error {
+  grid-column: 1 / -1;
+}
+
+/* 案件カードは写真を持たないので、読み込み中もカードの高さに近い箱だけを見せる */
+.top-jobs .skeleton--media {
+  display: none;
+}
+
+/* ---- 5. 利用ステップ（タブ） ------------------------------------------- */
+.tabs__list {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--color-input);
+}
+
+.tabs__tab {
+  flex: 1 1 0;
+  min-height: var(--space-12);
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  /* 選択中の下線ぶんの高さを常に確保し、切り替えても文字が上下に動かないようにする */
+  border-bottom: var(--space-1) solid transparent;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background-color: transparent;
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+.tabs__tab:hover {
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+/* 選択中は色だけでなく太字と下線でも示す（WCAG 1.4.1） */
+.tabs__tab[aria-selected="true"] {
+  border-bottom-color: var(--color-primary);
+  color: var(--color-foreground);
+  font-weight: var(--font-weight-bold);
+}
+
+.tabs__panel {
+  padding-top: var(--space-6);
+  border-radius: var(--radius-md);
+}
+
+.top-steps {
+  display: grid;
+  gap: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+.top-step {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+}
+
+.top-step__number {
+  display: grid;
+  flex: 0 0 var(--top-step-number);
+  place-items: center;
+  width: var(--top-step-number);
+  height: var(--top-step-number);
+  border-radius: var(--radius-full);
+  background-color: var(--color-brand);
+  color: var(--color-brand-foreground);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.top-step__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.top-step__title {
+  font-size: var(--font-size-lg);
+}
+
+.top-step__text {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+/* ---- 6. 利用者の声 ----------------------------------------------------- */
+/* サンプルであることを見落とされないよう、左罫線付きの枠で本文から区別する（フッターのデモ注記と同じ表現） */
+.top-voices__notice {
+  margin-top: 0;
+  padding: var(--space-2) var(--space-4);
+  border-left: var(--space-1) solid var(--color-warning);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-card);
+  color: var(--color-foreground);
+}
+
+.top-voices {
+  display: grid;
+  gap: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+.top-voice {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+  height: 100%;
+  margin: 0;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+}
+
+.top-voice__quote {
+  margin: 0;
+}
+
+.top-voice__quote p::before { content: "“"; }
+.top-voice__quote p::after { content: "”"; }
+
+.top-voice__author {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+/* ---- 7. お問い合わせ CTA ----------------------------------------------- */
+.top-cta {
+  padding-block: var(--space-12);
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+.top-cta__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+/* フッターの上余白（site.css）と重なって間延びしないよう、CTA の直後は詰める */
+.top-page + #site-footer .site-footer {
+  margin-top: 0;
+}
+
+/* ---- ブレークポイント -------------------------------------------------- */
+@media (min-width: 640px) {
+  .top-page {
+    --top-scroller-card: 15rem;
+  }
+
+  .top-section {
+    padding-block: var(--space-16);
+  }
+
+  .top-hero {
+    padding-block: var(--space-16);
+  }
+
+  /* 本来の h1 と同じ大きさで、ページの主題として最初に目に入るようにする */
+  .top-hero__title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .top-jobs,
+  .top-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tabs__tab {
+    flex: 0 0 auto;
+    padding-inline: var(--space-8);
+  }
+}
+
+@media (min-width: 1024px) {
+  .top-hero__break {
+    display: inline;
+  }
+
+  .top-features,
+  .top-jobs,
+  .top-voices {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .top-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .top-step {
+    flex-direction: column;
+  }
+}
+
+/* ---- 動きを減らす設定 -------------------------------------------------- */
+/* 矢印キー・ボタンでのスクロールを滑らかにするのは、動きを嫌わない人にだけにする */
+@media (prefers-reduced-motion: no-preference) {
+  .top-scroller {
+    scroll-behavior: smooth;
+  }
+}
+
+/* 吸着して勝手に動く挙動も「動き」なので、減らす設定では止めて利用者の操作どおりに止まるようにする */
+@media (prefers-reduced-motion: reduce) {
+  .top-scroller {
+    scroll-snap-type: none;
+  }
+}

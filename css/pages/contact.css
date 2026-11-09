@@ -1,0 +1,117 @@
+/* ==========================================================================
+   お問い合わせ（contact.html / contact-confirm.html / contact-complete.html）固有のスタイル
+   1カラムの枠とステップ表示（.steps）は css/layouts/form.css。ここでは同意欄・確認一覧・案内文の見た目を足す。
+   〜639px：確認一覧は項目名と値を縦積み／640px〜：項目名を左列に置く
+   色はすべてセマンティックトークン（var(--color-*)）を使う。
+   ========================================================================== */
+
+/* reset.css に [hidden] の指定が無く、display を持つクラスが hidden 属性に勝ってしまうため明示する */
+.contact [hidden] {
+  display: none;
+}
+
+/* エラーの件数・保存失敗の案内。色だけでなく枠と文言で知らせる */
+.contact__summary {
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-danger);
+  border-radius: var(--radius-md);
+  background-color: var(--color-card);
+  color: var(--color-danger);
+  font-weight: var(--font-weight-bold);
+}
+
+.contact__body {
+  min-height: calc(var(--space-16) * 3);
+}
+
+.contact__check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+/* チェックボックスは小さく押しにくいので、タップしやすい大きさにする */
+.contact__checkbox {
+  flex-shrink: 0;
+  width: var(--space-5);
+  height: var(--space-5);
+  accent-color: var(--color-primary);
+}
+
+/* 未同意のエラーは、チェックボックスを枠で囲んで示す（入力欄の aria-invalid と同じ考え方） */
+.contact__checkbox[aria-invalid="true"] {
+  outline: 2px solid var(--color-danger);
+  outline-offset: 2px;
+}
+
+/* ---- 確認画面 ----------------------------------------------------------- */
+.contact__confirm {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+}
+
+.contact__confirm-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+}
+
+.contact__confirm-row + .contact__confirm-row {
+  border-top: 1px solid var(--color-border);
+}
+
+.contact__confirm-label {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+/* 本文の改行をそのまま見せ、長い英数字（メールアドレス等）でも横にはみ出さないようにする */
+.contact__confirm-value {
+  margin: 0;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 640px) {
+  .contact__confirm-row {
+    flex-direction: row;
+    gap: var(--space-4);
+  }
+
+  /* 項目名の最長「お問い合わせ内容」（8文字）が1行に収まる幅 */
+  .contact__confirm-label {
+    flex: 0 0 10rem;
+  }
+
+  .contact__confirm-value {
+    flex: 1;
+  }
+}
+
+/* ---- 完了画面 ----------------------------------------------------------- */
+.contact__complete {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.contact__complete .form-layout__header {
+  margin-bottom: 0;
+}
+
+.contact__note {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-muted);
+  color: var(--color-foreground);
+}

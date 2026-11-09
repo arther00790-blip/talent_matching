@@ -1,0 +1,101 @@
+/* ==========================================================================
+   案件一覧（jobs.html）固有のスタイル
+   配置は css/layouts/list.css に任せ、ここではフィルターフォーム・並び替え・結果まわりの見た目だけを足す。
+   ========================================================================== */
+
+/* reset.css に [hidden] の指定が無く、display を持つクラスが hidden 属性に勝ってしまうため明示する */
+.jobs-page [hidden] {
+  display: none;
+}
+
+.jobs-page__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.jobs-page__lead {
+  color: var(--color-muted-foreground);
+}
+
+.jobs-page__count {
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---- 並び替え ---------------------------------------------------------- */
+.jobs-page__sort {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.jobs-page__sort-label {
+  color: var(--color-foreground);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ツールバーの1行に収まるよう、フォーム部品の横幅いっぱいの指定を打ち消す */
+.jobs-page__sort-select {
+  width: auto;
+  min-width: 0;
+}
+
+/* マッチ度順が選べない理由。並び替えの下に折り返して必ず読めるようにする */
+.jobs-page__sort-note {
+  flex-basis: 100%;
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-xs);
+}
+
+/* 0件の案内・エラーはカード1枚分のマス目に押し込まず、結果エリアの横幅いっぱいに出す */
+.jobs-page__grid > .empty-state,
+.jobs-page__error {
+  grid-column: 1 / -1;
+}
+
+.jobs-page__error {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---- フィルターフォーム（js/components/job-filter.js） ----------------- */
+.job-filter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.job-filter__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+/* 640px 以上は選んだ瞬間に結果が変わり、シートを閉じる必要も無いので「この条件で見る」は出さない */
+@media (min-width: 640px) {
+  .job-filter__submit {
+    display: none;
+  }
+}
+
+/* 640〜1023px はフィルターが結果の上に置かれるため、項目を横に並べて縦に間延びさせない */
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .job-filter {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .job-filter__actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* 差し込み先を行の高さまで伸ばし、中のサイドバーが sticky で追従できる範囲を確保する */
+  .jobs-page__sidebar-slot {
+    align-self: stretch;
+  }
+}

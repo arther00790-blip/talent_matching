@@ -1,0 +1,103 @@
+/* ==========================================================================
+   案件掲載（job-new.html）固有のスタイル
+   1カラムの枠は css/layouts/form.css。ここでは選択肢の組（fieldset）・報酬の入力欄・案内文の見た目を足す。
+   〜639px：報酬の下限・上限・単位は縦積み／640px〜：横並び
+   色はすべてセマンティックトークン（var(--color-*)）を使う。
+   ========================================================================== */
+
+/* reset.css に [hidden] の指定が無く、display を持つクラスが hidden 属性に勝ってしまうため明示する */
+.job-new [hidden] {
+  display: none;
+}
+
+.job-new__gate {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-muted);
+  color: var(--color-foreground);
+  font-weight: var(--font-weight-medium);
+}
+
+/* エラーの件数。色だけでなく枠と文言で知らせる */
+.job-new__summary {
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-danger);
+  border-radius: var(--radius-md);
+  background-color: var(--color-card);
+  color: var(--color-danger);
+  font-weight: var(--font-weight-bold);
+}
+
+.job-new__fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.job-new__chips {
+  gap: var(--space-2);
+}
+
+/* 選択肢の組のエラーは、組全体を枠で囲んで示す */
+.job-new__fieldset[aria-invalid="true"] .job-new__chips,
+.job-new__fieldset[aria-invalid="true"] .job-new__reward {
+  padding: var(--space-2);
+  border: 2px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+}
+
+.job-new__reward {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.job-new__sublabel {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.job-new__reward-sep {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .job-new__reward {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  .job-new__reward > .form-field {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .job-new__reward-sep {
+    display: block;
+    padding-bottom: var(--space-2);
+  }
+}
+
+.job-new__date {
+  max-width: 14rem;
+}
+
+.job-new__check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+/* チェックボックスは小さく押しにくいので、タップしやすい大きさにする */
+.job-new__checkbox {
+  width: var(--space-5);
+  height: var(--space-5);
+  accent-color: var(--color-primary);
+}

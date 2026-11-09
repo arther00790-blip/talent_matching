@@ -1,0 +1,188 @@
+/* ==========================================================================
+   プロフィール編集（profile-edit.html）固有のスタイル
+   1カラムの枠は css/layouts/form.css。ここでは各セクション・動画のドロップ領域・プレビューの見た目を足す。
+   〜639px：ボタンは全幅で縦積み（form.css）／640px〜：ボタンを右寄せで横並び
+   色はすべてセマンティックトークン（var(--color-*)）を使う。
+   ========================================================================== */
+
+/* reset.css に [hidden] の指定が無く、display を持つクラスが hidden 属性に勝ってしまうため明示する */
+.profile-edit [hidden] {
+  display: none;
+}
+
+.profile-edit__gate {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-muted);
+  color: var(--color-foreground);
+  font-weight: var(--font-weight-medium);
+}
+
+.profile-edit__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+.profile-edit__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.profile-edit__heading {
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-tight);
+}
+
+.profile-edit__fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.profile-edit__fieldset[aria-invalid="true"] .profile-edit__skills {
+  padding: var(--space-2);
+  border: 2px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+}
+
+/* ---- 自己紹介動画 ------------------------------------------------------ */
+.video-uploader__notice {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-md);
+  background-color: var(--color-muted);
+  color: var(--color-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.video-uploader__current {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.video-uploader__picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* 点線の枠で「ここに落とせる」ことを伝える。label なので、どこを押してもファイル選択が開く */
+.video-uploader__drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-8) var(--space-4);
+  border: 2px dashed var(--color-input);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+  text-align: center;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--easing-standard),
+    border-color var(--duration-fast) var(--easing-standard);
+}
+
+.video-uploader__drop:hover,
+.video-uploader__drop--active {
+  border-color: var(--color-primary);
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+/* input 自体は見えないので、フォーカスの位置をドロップ領域の枠で示す */
+.video-uploader__input:focus-visible + .video-uploader__drop {
+  outline: var(--focus-ring-width) solid var(--color-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.video-uploader__drop-icon {
+  color: var(--color-primary);
+  font-size: var(--font-size-2xl);
+  line-height: 1;
+}
+
+.video-uploader__drop-text {
+  font-weight: var(--font-weight-medium);
+}
+
+.video-uploader__drop-or {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+/* 見た目はボタンだが、押されるのは外側の label。二重に反応しないようクリックは label に任せる */
+.video-uploader__choose {
+  pointer-events: none;
+}
+
+.video-uploader__file {
+  font-size: var(--font-size-sm);
+  overflow-wrap: anywhere;
+}
+
+/* エラーが無いときも aria-live の領域としてページに置いたまま、余白だけ消す */
+.video-uploader__error:empty {
+  display: none;
+}
+
+.video-uploader__video,
+.video-uploader .video-player__video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  /* 縦長の動画でも余白が背景に溶けず、プレーヤーの枠だと分かる濃い色にする */
+  background-color: var(--color-secondary);
+  object-fit: contain;
+}
+
+/* 登録済み動画は video-player.js で描画する。タレント詳細と同じ見た目にそろえる */
+.video-uploader .video-player {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.video-uploader .video-player__caption,
+.video-uploader .video-player__error {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-sm);
+}
+
+.video-uploader__consent {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+/* チェックボックスは小さく押しにくいので、タップしやすい大きさにする */
+.video-uploader__checkbox {
+  width: var(--space-5);
+  height: var(--space-5);
+  accent-color: var(--color-primary);
+}
+
+.video-uploader__hint {
+  text-align: right;
+}
+
+@media (max-width: 639px) {
+  .video-uploader__hint {
+    text-align: left;
+  }
+}

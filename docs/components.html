@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<!--
+  共通UIコンポーネントの見本ページ（開発用。公開ページではない）。
+  design-tokens-preview.html と同じく docs/ に置き、../css/ ・ ../js/ を相対パスで読み込む。
+  見本用のレイアウトもトークンだけで書き、生の色値は使わない。
+  Live Server で開くこと（ES Modules は file:// では動かないため）。
+-->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>コンポーネント見本 | StageLink</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/utilities.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <!-- 見本ページ専用の並べ方。カード一覧のグリッドなどページ構成は #03 の layouts/*.css で作るため、ここでは最小限 -->
+  <style>
+    .preview-section { padding-block: var(--space-8); border-bottom: 1px solid var(--color-border); }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+      gap: var(--space-6);
+      padding: 0;
+      list-style: none;
+    }
+    .preview-form { max-width: 32rem; }
+    .preview-sheet-layout { display: grid; gap: var(--space-6); }
+    .preview-note { color: var(--color-muted-foreground); font-size: var(--font-size-sm); }
+    @media (min-width: 640px) {
+      .preview-sheet-layout { grid-template-columns: 16rem 1fr; align-items: start; }
+    }
+  </style>
+</head>
+<body class="bg-background text-foreground">
+  <a href="#main" class="skip-link">本文へスキップ</a>
+
+  <div id="site-header"></div>
+
+  <main id="main" class="container">
+    <section class="preview-section stack">
+      <h1>コンポーネント見本</h1>
+      <p class="preview-note">掲載している人物・会社・案件はすべて架空です。Tab / Shift+Tab / Enter / Esc だけでも操作を確認できます。</p>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-buttons">
+      <h2 id="heading-buttons">ボタン</h2>
+      <div class="cluster">
+        <button type="button" class="button button--primary">応募する</button>
+        <button type="button" class="button button--secondary">企業の方はこちら</button>
+        <button type="button" class="button button--outline">お気に入り</button>
+        <button type="button" class="button button--ghost">キャンセル</button>
+        <button type="button" class="button button--danger">削除する</button>
+        <a href="#heading-buttons" class="button button--primary">リンク型ボタン</a>
+      </div>
+      <div class="cluster">
+        <button type="button" class="button button--primary button--sm">小さいボタン</button>
+        <button type="button" class="button button--primary">標準</button>
+        <button type="button" class="button button--primary button--lg">大きいボタン</button>
+        <button type="button" class="button button--primary" disabled>押せない状態</button>
+      </div>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-badges">
+      <h2 id="heading-badges">バッジ</h2>
+      <p class="preview-note">色だけで状態を伝えないよう、すべてテキストを併記しています。</p>
+      <div class="cluster">
+        <span class="badge badge--video"><span aria-hidden="true">▶</span> 動画あり</span>
+        <span class="badge badge--match-great">相性◎</span>
+        <span class="badge badge--match-good">相性○</span>
+      </div>
+      <div class="cluster" id="status-badges"></div>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-chips">
+      <h2 id="heading-chips">チップ・タグ</h2>
+      <ul class="cluster" role="list" style="padding: 0">
+        <li class="chip">殺陣</li>
+        <li class="chip">英語</li>
+        <li class="chip chip--sm">小さいタグ</li>
+      </ul>
+      <fieldset class="stack" style="--stack-space: var(--space-2); border: 0; padding: 0">
+        <legend>選択できるフィルター（チェックボックス型）</legend>
+        <div class="cluster">
+          <label class="chip chip--selectable"><input type="checkbox" class="chip__input" checked>ダンス</label>
+          <label class="chip chip--selectable"><input type="checkbox" class="chip__input">歌唱</label>
+          <label class="chip chip--selectable"><input type="checkbox" class="chip__input">楽器</label>
+        </div>
+      </fieldset>
+      <div class="cluster" id="toggle-chips" aria-label="ボタン型のフィルター" role="group">
+        <button type="button" class="chip chip--selectable" aria-pressed="false">動画ありのみ</button>
+        <button type="button" class="chip chip--selectable" aria-pressed="true">新着順</button>
+      </div>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-form">
+      <h2 id="heading-form">フォーム</h2>
+      <form class="preview-form stack" novalidate>
+        <div class="form-field">
+          <label class="form-field__label" for="demo-name">お名前 <span class="form-field__required">必須</span></label>
+          <input class="form-field__input" id="demo-name" name="name" type="text" autocomplete="name" required aria-describedby="demo-name-help">
+          <p class="form-field__help" id="demo-name-help">芸名でもかまいません。</p>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="demo-email">メールアドレス <span class="form-field__required">必須</span></label>
+          <input class="form-field__input" id="demo-email" name="email" type="email" autocomplete="email" required value="example@" aria-invalid="true" aria-describedby="demo-email-error">
+          <p class="form-field__error" id="demo-email-error">メールアドレスの形式で入力してください（例：name@example.com）</p>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="demo-role">職種</label>
+          <select class="form-field__input" id="demo-role" name="role">
+            <option value="">選択してください</option>
+            <option value="actor">俳優</option>
+            <option value="model">モデル</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="demo-message">メッセージ</label>
+          <textarea class="form-field__input" id="demo-message" name="message" aria-describedby="demo-message-help"></textarea>
+          <p class="form-field__help" id="demo-message-help">500文字以内</p>
+        </div>
+      </form>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-talent-cards">
+      <h2 id="heading-talent-cards">タレントカード</h2>
+      <p class="preview-note">最後のカードは、名前に &lt;script&gt; を含めてもタグとして解釈されないことの確認用です。</p>
+      <div class="preview-grid" id="talent-cards"></div>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-job-cards">
+      <h2 id="heading-job-cards">案件カード</h2>
+      <p class="preview-note">マッチ度 85点→相性◎、60点→相性○、40点→バッジ無し、の順に並べています。</p>
+      <div class="preview-grid" id="job-cards"></div>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-skeleton">
+      <h2 id="heading-skeleton">スケルトン</h2>
+      <div class="cluster">
+        <button type="button" class="button button--outline" id="skeleton-replay">読み込みを再現する</button>
+      </div>
+      <div class="preview-grid" id="skeleton-demo" aria-live="polite"></div>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-empty">
+      <h2 id="heading-empty">空状態</h2>
+      <div class="preview-grid" id="empty-states"></div>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-toast">
+      <h2 id="heading-toast">トースト</h2>
+      <div class="cluster">
+        <button type="button" class="button button--primary" data-toast="success">成功トースト</button>
+        <button type="button" class="button button--danger" data-toast="error">エラートースト</button>
+        <button type="button" class="button button--secondary" data-toast="info">お知らせトースト</button>
+      </div>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-dialog">
+      <h2 id="heading-dialog">ダイアログ</h2>
+      <p class="preview-note">閉じると、開いたボタンにフォーカスが戻ります（Esc・キャンセル・背面クリックで閉じる）。</p>
+      <div class="cluster">
+        <button type="button" class="button button--primary" id="open-apply-dialog">応募ダイアログを開く</button>
+        <button type="button" class="button button--outline" id="open-confirm-dialog">確認ダイアログを開く</button>
+      </div>
+    </section>
+
+    <section class="preview-section stack" aria-labelledby="heading-sheet">
+      <h2 id="heading-sheet">ボトムシート（検索フィルター）</h2>
+      <p class="preview-note">画面幅 640px 未満では「絞り込み」ボタンで下から開き、640px 以上では左側に常に表示されます。</p>
+      <div class="preview-sheet-layout">
+        <aside class="bottom-sheet" id="filter-sheet" aria-labelledby="filter-sheet-title">
+          <div class="bottom-sheet__header">
+            <h3 class="bottom-sheet__title" id="filter-sheet-title">絞り込み</h3>
+            <button type="button" class="button button--ghost button--sm bottom-sheet__close" data-bottom-sheet-close>閉じる</button>
+          </div>
+          <div class="stack">
+            <div class="form-field">
+              <label class="form-field__label" for="filter-area">地域</label>
+              <select class="form-field__input" id="filter-area">
+                <option>すべて</option>
+                <option>東京都</option>
+                <option>大阪府</option>
+              </select>
+            </div>
+            <div class="cluster">
+              <label class="chip chip--selectable"><input type="checkbox" class="chip__input">動画ありのみ</label>
+              <label class="chip chip--selectable"><input type="checkbox" class="chip__input">英語</label>
+            </div>
+            <button type="button" class="button button--primary" data-bottom-sheet-close>この条件で探す</button>
+          </div>
+        </aside>
+        <div class="stack">
+          <div>
+            <button type="button" class="button button--outline bottom-sheet__trigger" id="filter-trigger">絞り込み</button>
+          </div>
+          <p>ここに検索結果のカードが並びます。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script type="module" src="components.js"></script>
+</body>
+</html>
