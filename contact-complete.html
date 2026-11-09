@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!-- 骨格は docs/templates/page-base.html と同じ。ページ固有の内容は <main> 内と pages/*.css / pages/*.js に書く -->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>お問い合わせ完了 | StageLink</title>
+  <meta name="description" content="お問い合わせの送信が完了しました。">
+  <!-- OGP：SNS で共有されたときのタイトル・説明。og:image / og:url は公開 URL が決まってから絶対 URL で足す -->
+  <meta property="og:title" content="お問い合わせ完了 | StageLink">
+  <meta property="og:description" content="お問い合わせの送信が完了しました。">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="StageLink">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- フォント：接続を先に確立して表示までの待ち時間を減らす。display=swap で読み込み中も文字を出す -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+
+  <!-- 共通ベース（#01） -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <!-- 共通UIコンポーネント -->
+  <link rel="stylesheet" href="css/components.css">
+  <!-- レイアウト：サイト共通＋ページの種類ごと -->
+  <link rel="stylesheet" href="css/layouts/site.css">
+  <link rel="stylesheet" href="css/layouts/form.css">
+  <!-- ページ固有 -->
+  <link rel="stylesheet" href="css/pages/contact.css">
+</head>
+<body class="bg-background text-foreground">
+  <a href="#main" class="skip-link">本文へスキップ</a>
+
+  <!-- ヘッダーは js/common.js（components/header.js）が描画する -->
+  <div id="site-header"></div>
+
+  <main id="main">
+    <div class="form-layout contact">
+      <!-- 「入力 → 確認 → 完了」は js/components/step-indicator.js が描画する -->
+      <div data-step-indicator></div>
+
+      <!-- 確認画面を経ずに開かれた場合は contact-complete.js が入力画面へ戻すので、それまで本文は隠しておく -->
+      <div class="contact__complete" data-complete-body hidden>
+        <div class="form-layout__header">
+          <h1 tabindex="-1" data-complete-heading>お問い合わせを受け付けました</h1>
+          <p class="form-layout__lead">お問い合わせいただき、ありがとうございました。</p>
+        </div>
+        <p class="contact__note" data-complete-note>このサイトはデモのため、入力内容は外部へ送信されていません。一時保存していた入力内容も削除しました。</p>
+        <p class="contact__summary" data-complete-warning role="alert" hidden></p>
+        <div class="form-layout__actions">
+          <a class="button button--primary button--lg" href="index.html">トップページへ戻る</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッターは js/common.js（components/footer.js）が描画する -->
+  <div id="site-footer"></div>
+
+  <!-- 共通JS → ページJS の順。ページJSが共通部品の描画結果を前提にできるようにするため -->
+  <script type="module" src="js/common.js"></script>
+  <script type="module" src="js/pages/contact-complete.js"></script>
+</body>
+</html>

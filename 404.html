@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!-- 骨格は docs/templates/page-base.html と同じ。ページ固有の内容は <main> 内と pages/*.css / pages/*.js に書く -->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>ページが見つかりません | StageLink</title>
+  <meta name="description" content="お探しのページは見つかりませんでした。">
+  <!-- OGP：SNS で共有されたときのタイトル・説明。og:image / og:url は公開 URL が決まってから絶対 URL で足す -->
+  <meta property="og:title" content="ページが見つかりません | StageLink">
+  <meta property="og:description" content="お探しのページは見つかりませんでした。">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="StageLink">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- フォント：接続を先に確立して表示までの待ち時間を減らす。display=swap で読み込み中も文字を出す -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+
+  <!-- 共通ベース（#01） -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <!-- 共通UIコンポーネント -->
+  <link rel="stylesheet" href="css/components.css">
+  <!-- レイアウト：サイト共通＋ページの種類ごと -->
+  <link rel="stylesheet" href="css/layouts/site.css">
+  <link rel="stylesheet" href="css/layouts/static.css">
+  <!-- ページ固有 -->
+  <link rel="stylesheet" href="css/pages/static.css">
+</head>
+<body class="bg-background text-foreground">
+  <a href="#main" class="skip-link">本文へスキップ</a>
+
+  <!-- ヘッダーは js/common.js（components/header.js）が描画する -->
+  <div id="site-header"></div>
+
+  <main id="main">
+    <div class="static-layout">
+      <div class="not-found">
+        <p class="not-found__code" aria-hidden="true">404</p>
+        <div class="static-layout__header">
+          <h1>ページが見つかりません</h1>
+          <p class="static-layout__lead">お探しのページは、移動または削除されたか、URL が少し違っているのかもしれません。お手数ですが、下のリンクから探しなおしてみてください。</p>
+        </div>
+        <nav class="static-actions" aria-label="おすすめのページ">
+          <a class="button button--primary" href="index.html">トップページへ</a>
+          <a class="button button--outline" href="talents.html">タレントを探す</a>
+          <a class="button button--outline" href="jobs.html">案件を探す</a>
+        </nav>
+        <p>それでも見つからないときは、<a href="contact.html">お問い合わせ</a>からお知らせください。</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッターは js/common.js（components/footer.js）が描画する -->
+  <div id="site-footer"></div>
+
+  <!-- 共通JS → ページJS の順。ページJSが共通部品の描画結果を前提にできるようにするため -->
+  <script type="module" src="js/common.js"></script>
+  <!-- <script type="module" src="js/pages/xxx.js"></script> -->
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!-- 骨格は docs/templates/page-base.html と同じ。ページ固有の内容は <main> 内と pages/*.css / pages/*.js に書く -->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>お問い合わせ | StageLink</title>
+  <meta name="description" content="StageLink へのお問い合わせフォームです。">
+  <!-- OGP：SNS で共有されたときのタイトル・説明。og:image / og:url は公開 URL が決まってから絶対 URL で足す -->
+  <meta property="og:title" content="お問い合わせ | StageLink">
+  <meta property="og:description" content="StageLink へのお問い合わせフォームです。">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="StageLink">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- フォント：接続を先に確立して表示までの待ち時間を減らす。display=swap で読み込み中も文字を出す -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+
+  <!-- 共通ベース（#01） -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <!-- 共通UIコンポーネント -->
+  <link rel="stylesheet" href="css/components.css">
+  <!-- レイアウト：サイト共通＋ページの種類ごと -->
+  <link rel="stylesheet" href="css/layouts/site.css">
+  <link rel="stylesheet" href="css/layouts/form.css">
+  <!-- ページ固有 -->
+  <link rel="stylesheet" href="css/pages/contact.css">
+</head>
+<body class="bg-background text-foreground">
+  <a href="#main" class="skip-link">本文へスキップ</a>
+
+  <!-- ヘッダーは js/common.js（components/header.js）が描画する -->
+  <div id="site-header"></div>
+
+  <main id="main">
+    <div class="form-layout contact">
+      <!-- 「入力 → 確認 → 完了」は js/components/step-indicator.js が描画する -->
+      <div data-step-indicator></div>
+
+      <div class="form-layout__header">
+        <h1>お問い合わせ</h1>
+        <p class="form-layout__lead">内容を入力して「入力内容を確認する」を押してください。次の画面で内容を確認してから送信します。デモのため、入力内容が外部へ送信されることはありません。</p>
+      </div>
+
+      <!-- 送信先は持たない（action なし）。contact.js が submit を止めて確認画面へ進める -->
+      <form class="form-layout__form" data-contact-form novalidate>
+        <p class="contact__summary" data-form-summary role="alert" hidden></p>
+
+        <div class="form-field">
+          <label class="form-field__label" for="contact-name">お名前<span class="form-field__required">必須</span></label>
+          <input type="text" class="form-field__input" id="contact-name" name="name" required maxlength="50" autocomplete="name" data-field="name" aria-describedby="contact-name-error">
+          <p class="form-field__error" id="contact-name-error" data-field-error="name" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="contact-email">メールアドレス<span class="form-field__required">必須</span></label>
+          <input type="email" class="form-field__input" id="contact-email" name="email" required maxlength="254" autocomplete="email" inputmode="email" spellcheck="false" placeholder="例：name@example.com" data-field="email" aria-describedby="contact-email-error">
+          <p class="form-field__error" id="contact-email-error" data-field-error="email" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="contact-company">会社名</label>
+          <input type="text" class="form-field__input" id="contact-company" name="company" maxlength="100" autocomplete="organization" data-field="company" aria-describedby="contact-company-error">
+          <p class="form-field__error" id="contact-company-error" data-field-error="company" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="contact-category">お問い合わせ種別<span class="form-field__required">必須</span></label>
+          <!-- 選択肢は js/data/master.js の CONTACT_CATEGORIES から contact.js が足す -->
+          <select class="form-field__input" id="contact-category" name="category" required data-field="category" data-category-options aria-describedby="contact-category-error">
+            <option value="">選択してください</option>
+          </select>
+          <p class="form-field__error" id="contact-category-error" data-field-error="category" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="contact-body">お問い合わせ内容<span class="form-field__required">必須</span></label>
+          <textarea class="form-field__input contact__body" id="contact-body" name="body" required minlength="10" maxlength="1000" rows="8" data-field="body" aria-describedby="contact-body-help contact-body-count contact-body-error"></textarea>
+          <p class="form-field__help" id="contact-body-help">10〜1000文字で入力してください。</p>
+          <!-- 1文字ごとに読み上げると煩いので、カウンター自体はライブリージョンにしない（欄に入ったとき説明として読まれる） -->
+          <p class="form-field__help" id="contact-body-count" data-count-for="body"></p>
+          <!-- 「足りない → ちょうどよい → 超えた」の切り替わりだけを読み上げる -->
+          <p class="visually-hidden" data-count-status role="status"></p>
+          <p class="form-field__error" id="contact-body-error" data-field-error="body" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <p class="form-field__label">プライバシーポリシーへの同意<span class="form-field__required">必須</span></p>
+          <p class="form-field__help" id="contact-agree-help">
+            <a href="privacy.html" target="_blank" rel="noopener">プライバシーポリシー（新しいタブで開きます）</a>をお読みのうえ、同意してください。
+          </p>
+          <label class="contact__check" for="contact-agree">
+            <input type="checkbox" class="contact__checkbox" id="contact-agree" name="agree" required data-field="agree" aria-describedby="contact-agree-help contact-agree-error">
+            プライバシーポリシーに同意する
+          </label>
+          <p class="form-field__error" id="contact-agree-error" data-field-error="agree" hidden></p>
+        </div>
+
+        <div class="form-layout__actions">
+          <button type="submit" class="button button--primary button--lg" data-contact-submit>入力内容を確認する</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- フッターは js/common.js（components/footer.js）が描画する -->
+  <div id="site-footer"></div>
+
+  <!-- 共通JS → ページJS の順。ページJSが共通部品の描画結果を前提にできるようにするため -->
+  <script type="module" src="js/common.js"></script>
+  <script type="module" src="js/pages/contact.js"></script>
+</body>
+</html>

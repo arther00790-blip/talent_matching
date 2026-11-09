@@ -1,0 +1,14 @@
+{
+  "name": "stagelink",
+  "version": "0.1.0",
+  "private": true,
+  "description": "StageLink（タレントマッチングのデモサイト）",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "test": "node --test \"tests/**/*.test.mjs\""
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

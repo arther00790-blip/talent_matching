@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!-- 骨格は docs/templates/page-base.html と同じ。ページ固有の内容は <main> 内と pages/*.css / pages/*.js に書く -->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>案件掲載 | StageLink</title>
+  <meta name="description" content="募集条件を入力して、出演者募集の案件を掲載します。">
+  <!-- OGP：SNS で共有されたときのタイトル・説明。og:image / og:url は公開 URL が決まってから絶対 URL で足す -->
+  <meta property="og:title" content="案件掲載 | StageLink">
+  <meta property="og:description" content="募集条件を入力して、出演者募集の案件を掲載します。">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="StageLink">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- フォント：接続を先に確立して表示までの待ち時間を減らす。display=swap で読み込み中も文字を出す -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+
+  <!-- 共通ベース（#01） -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <!-- 共通UIコンポーネント -->
+  <link rel="stylesheet" href="css/components.css">
+  <!-- レイアウト：サイト共通＋ページの種類ごと -->
+  <link rel="stylesheet" href="css/layouts/site.css">
+  <link rel="stylesheet" href="css/layouts/form.css">
+  <!-- ページ固有 -->
+  <link rel="stylesheet" href="css/pages/job-new.css">
+</head>
+<body class="bg-background text-foreground">
+  <a href="#main" class="skip-link">本文へスキップ</a>
+
+  <!-- ヘッダーは js/common.js（components/header.js）が描画する -->
+  <div id="site-header"></div>
+
+  <main id="main">
+    <div class="form-layout job-new">
+      <div class="form-layout__header">
+        <h1>案件を掲載する</h1>
+        <p class="form-layout__lead">募集条件を入力して、出演者募集の案件を掲載します。内容はこのブラウザの中にだけ保存されます（デモ）。</p>
+      </div>
+
+      <!-- 企業以外のロールでは理由の案内だけを出し、フォームは出さない（job-new.js が切り替える） -->
+      <p class="job-new__gate" data-job-new-gate role="status" hidden></p>
+
+      <!-- 選択肢（ジャンル・職種・年齢帯・地域・スキル）は js/data/master.js から job-new.js が作る -->
+      <form class="form-layout__form" data-job-form novalidate hidden>
+        <p class="job-new__summary" data-form-summary role="alert" hidden></p>
+
+        <div class="form-field">
+          <label class="form-field__label" for="job-title">案件タイトル<span class="form-field__required">必須</span></label>
+          <input type="text" class="form-field__input" id="job-title" name="title" required data-field="title" aria-describedby="job-title-count job-title-error">
+          <p class="form-field__help" id="job-title-count" data-count-for="title"></p>
+          <p class="form-field__error" id="job-title-error" data-field-error="title" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="job-genre">ジャンル<span class="form-field__required">必須</span></label>
+          <select class="form-field__input" id="job-genre" name="genre" required data-field="genre" data-options="genre" aria-describedby="job-genre-error"></select>
+          <p class="form-field__error" id="job-genre-error" data-field-error="genre" hidden></p>
+        </div>
+
+        <fieldset class="job-new__fieldset" data-field="requiredRoles" aria-describedby="job-roles-error">
+          <legend class="form-field__label">募集する職種（複数選択できます）<span class="form-field__required">必須</span></legend>
+          <div class="cluster job-new__chips" data-options="requiredRoles"></div>
+          <p class="form-field__error" id="job-roles-error" data-field-error="requiredRoles" hidden></p>
+        </fieldset>
+
+        <div class="form-field">
+          <label class="form-field__label" for="job-gender">性別</label>
+          <select class="form-field__input" id="job-gender" name="gender" data-field="gender" data-options="gender" aria-describedby="job-gender-error"></select>
+          <p class="form-field__error" id="job-gender-error" data-field-error="gender" hidden></p>
+        </div>
+
+        <fieldset class="job-new__fieldset" data-field="ageRanges" aria-describedby="job-ages-error">
+          <legend class="form-field__label">募集する年齢帯（複数選択できます）<span class="form-field__required">必須</span></legend>
+          <div class="cluster job-new__chips" data-options="ageRanges"></div>
+          <p class="form-field__error" id="job-ages-error" data-field-error="ageRanges" hidden></p>
+        </fieldset>
+
+        <div class="form-field">
+          <label class="form-field__label" for="job-area">撮影地域（都道府県）<span class="form-field__required">必須</span></label>
+          <select class="form-field__input" id="job-area" name="area" required data-field="area" data-options="area" aria-describedby="job-area-error"></select>
+          <p class="form-field__error" id="job-area-error" data-field-error="area" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="job-shoot-dates">撮影日程<span class="form-field__required">必須</span></label>
+          <input type="text" class="form-field__input" id="job-shoot-dates" name="shootDates" required placeholder="例：2026年12月上旬（1日）" data-field="shootDates" aria-describedby="job-shoot-dates-error">
+          <p class="form-field__error" id="job-shoot-dates-error" data-field-error="shootDates" hidden></p>
+        </div>
+
+        <fieldset class="job-new__fieldset" data-field="reward" aria-describedby="job-reward-help job-reward-error">
+          <legend class="form-field__label">報酬（円）<span class="form-field__required">必須</span></legend>
+          <div class="job-new__reward">
+            <div class="form-field">
+              <label class="job-new__sublabel" for="job-reward-min">下限</label>
+              <input type="number" class="form-field__input" id="job-reward-min" name="rewardMin" min="0" step="1000" inputmode="numeric" required>
+            </div>
+            <span class="job-new__reward-sep" aria-hidden="true">〜</span>
+            <div class="form-field">
+              <label class="job-new__sublabel" for="job-reward-max">上限</label>
+              <input type="number" class="form-field__input" id="job-reward-max" name="rewardMax" min="0" step="1000" inputmode="numeric" required>
+            </div>
+            <div class="form-field">
+              <label class="job-new__sublabel" for="job-reward-unit">単位</label>
+              <select class="form-field__input" id="job-reward-unit" name="rewardUnit" data-options="rewardUnit"></select>
+            </div>
+          </div>
+          <p class="form-field__help" id="job-reward-help">金額が決まっている場合は、下限と上限に同じ金額を入れてください。</p>
+          <p class="form-field__error" id="job-reward-error" data-field-error="reward" hidden></p>
+        </fieldset>
+
+        <fieldset class="job-new__fieldset" data-field="requiredSkills" aria-describedby="job-skills-error">
+          <legend class="form-field__label">求めるスキル（任意・複数選択できます）</legend>
+          <div class="cluster job-new__chips" data-options="requiredSkills"></div>
+          <p class="form-field__error" id="job-skills-error" data-field-error="requiredSkills" hidden></p>
+        </fieldset>
+
+        <div class="form-field">
+          <label class="job-new__check">
+            <input type="checkbox" class="job-new__checkbox" name="videoPreferred">
+            <span>自己紹介動画ありのタレントを歓迎する</span>
+          </label>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="job-description">案件の説明<span class="form-field__required">必須</span></label>
+          <textarea class="form-field__input" id="job-description" name="description" rows="6" required data-field="description" aria-describedby="job-description-count job-description-error"></textarea>
+          <p class="form-field__help" id="job-description-count" data-count-for="description"></p>
+          <p class="form-field__error" id="job-description-error" data-field-error="description" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="job-deadline">応募締切日<span class="form-field__required">必須</span></label>
+          <input type="date" class="form-field__input job-new__date" id="job-deadline" name="deadline" required data-field="deadline" aria-describedby="job-deadline-error">
+          <p class="form-field__error" id="job-deadline-error" data-field-error="deadline" hidden></p>
+        </div>
+
+        <div class="form-layout__actions">
+          <a class="button button--ghost" href="mypage.html">マイページへ戻る</a>
+          <button type="submit" class="button button--primary">この内容で掲載する</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- フッターは js/common.js（components/footer.js）が描画する -->
+  <div id="site-footer"></div>
+
+  <!-- 共通JS → ページJS の順。ページJSが共通部品の描画結果を前提にできるようにするため -->
+  <script type="module" src="js/common.js"></script>
+  <script type="module" src="js/pages/job-new.js"></script>
+</body>
+</html>

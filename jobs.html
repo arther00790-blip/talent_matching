@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!-- 骨格は docs/templates/page-base.html と同じ。ページ固有の内容は <main> 内と pages/*.css / pages/*.js に書く -->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>案件一覧 | StageLink</title>
+  <meta name="description" content="CM・映画・ドラマなどの出演案件を、条件で絞り込んで探せます。">
+  <!-- OGP：SNS で共有されたときのタイトル・説明。og:image / og:url は公開 URL が決まってから絶対 URL で足す -->
+  <meta property="og:title" content="案件一覧 | StageLink">
+  <meta property="og:description" content="CM・映画・ドラマなどの出演案件を、条件で絞り込んで探せます。">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="StageLink">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- フォント：接続を先に確立して表示までの待ち時間を減らす。display=swap で読み込み中も文字を出す -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+
+  <!-- 共通ベース（#01） -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <!-- 共通UIコンポーネント -->
+  <link rel="stylesheet" href="css/components.css">
+  <!-- レイアウト：サイト共通＋ページの種類ごと -->
+  <link rel="stylesheet" href="css/layouts/site.css">
+  <link rel="stylesheet" href="css/layouts/list.css">
+  <!-- ページ固有 -->
+  <link rel="stylesheet" href="css/pages/jobs.css">
+</head>
+<body class="bg-background text-foreground">
+  <a href="#main" class="skip-link">本文へスキップ</a>
+
+  <!-- ヘッダーは js/common.js（components/header.js）が描画する -->
+  <div id="site-header"></div>
+
+  <main id="main">
+    <div class="container list-layout jobs-page">
+      <div class="list-layout__header">
+        <div class="jobs-page__intro">
+          <h1>案件一覧</h1>
+          <p class="jobs-page__lead">CM・映画・MV・舞台などの出演案件を、職種・ジャンル・地域・報酬で探せます。</p>
+        </div>
+      </div>
+      <div class="list-layout__body">
+        <!-- フィルター枠は js/components/sidebar.js、中身は job-filter.js が描画する -->
+        <div class="list-layout__sidebar-slot jobs-page__sidebar-slot" data-filter-slot></div>
+        <section class="list-layout__results" aria-labelledby="job-results-title">
+          <h2 class="visually-hidden" id="job-results-title">検索結果</h2>
+          <div class="list-layout__toolbar">
+            <p class="jobs-page__count" data-job-count aria-live="polite" aria-atomic="true"></p>
+            <div class="jobs-page__sort">
+              <label class="jobs-page__sort-label" for="job-sort">並び替え</label>
+              <select class="form-field__input jobs-page__sort-select" id="job-sort" name="sort" data-job-sort aria-describedby="job-sort-note">
+                <option value="deadline">締切が近い順</option>
+                <option value="newest">新着順</option>
+                <option value="match">マッチ度順</option>
+              </select>
+              <p class="jobs-page__sort-note" id="job-sort-note" data-job-sort-note hidden></p>
+            </div>
+          </div>
+          <div class="list-layout__grid jobs-page__grid" data-job-results aria-busy="true"></div>
+          <noscript><p>案件一覧の表示には JavaScript を有効にしてください。</p></noscript>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッターは js/common.js（components/footer.js）が描画する -->
+  <div id="site-footer"></div>
+
+  <!-- 共通JS → ページJS の順。ページJSが共通部品の描画結果を前提にできるようにするため -->
+  <script type="module" src="js/common.js"></script>
+  <script type="module" src="js/pages/jobs.js"></script>
+</body>
+</html>

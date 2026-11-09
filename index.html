@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<!-- 骨格は docs/templates/page-base.html と同じ。ページ固有の内容は <main> 内と pages/*.css / pages/*.js に書く -->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>タレントと広告・映像制作会社をつなぐ | StageLink</title>
+  <meta name="description" content="StageLink（ポートフォリオ用デモ）：タレントと広告・映像制作会社をつなぐマッチングサイト">
+  <!-- OGP：SNS で共有されたときのタイトル・説明。og:image / og:url は公開 URL が決まってから絶対 URL で足す -->
+  <meta property="og:title" content="タレントと広告・映像制作会社をつなぐ | StageLink">
+  <meta property="og:description" content="StageLink（ポートフォリオ用デモ）：タレントと広告・映像制作会社をつなぐマッチングサイト">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="StageLink">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- フォント：接続を先に確立して表示までの待ち時間を減らす。display=swap で読み込み中も文字を出す -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+
+  <!-- 共通ベース（#01） -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <!-- 共通UIコンポーネント -->
+  <link rel="stylesheet" href="css/components.css">
+  <!-- レイアウト：サイト共通＋ページの種類ごと -->
+  <link rel="stylesheet" href="css/layouts/site.css">
+  <!-- ページ固有 -->
+  <link rel="stylesheet" href="css/pages/top.css">
+</head>
+<body class="bg-background text-foreground">
+  <a href="#main" class="skip-link">本文へスキップ</a>
+
+  <!-- ヘッダーは js/common.js（components/header.js）が描画する -->
+  <div id="site-header"></div>
+
+  <main id="main" class="top-page">
+    <!-- 1. ヒーロー -->
+    <section class="top-hero" data-top-section="hero" aria-labelledby="top-hero-title">
+      <div class="container top-hero__inner">
+        <p class="top-hero__eyebrow">タレント × 広告・映像制作会社のマッチング</p>
+        <h1 class="top-hero__title" id="top-hero-title">あなたの「らしさ」を、<br class="top-hero__break">動画でまっすぐ届けよう。</h1>
+        <p class="top-hero__lead">写真と自己紹介動画でプロフィールをつくり、CM・MV・舞台などの案件に応募できます。制作会社は、雰囲気や話し方まで確かめてスカウトできます。</p>
+        <div class="top-hero__actions">
+          <a class="button button--primary button--lg" href="contact.html?category=talent-registration">タレントとして登録</a>
+          <a class="button button--outline button--lg" href="jobs.html">案件を探す</a>
+        </div>
+        <p class="top-hero__note">登録のご相談はお問い合わせフォームで受け付けています（種別「タレント登録について」を選んだ状態で開きます）。</p>
+      </div>
+    </section>
+
+    <!-- 2. サービスの特徴 -->
+    <section class="top-section" data-top-section="features" aria-labelledby="top-features-title">
+      <div class="container">
+        <div class="top-section__header">
+          <h2 class="top-section__title" id="top-features-title">StageLink の特徴</h2>
+        </div>
+        <ul class="top-features" role="list">
+          <li class="top-feature">
+            <span class="top-feature__icon">
+              <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" focusable="false">
+                <rect x="4" y="9" width="40" height="30" rx="7" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                <path d="M20 17.5v13l11-6.5z" fill="currentColor"/>
+              </svg>
+            </span>
+            <h3 class="top-feature__title">動画で伝わる</h3>
+            <p class="top-feature__text">30秒前後の自己紹介動画で、写真や文字だけでは伝わりにくい表情・声・話し方まで届けられます。</p>
+          </li>
+          <li class="top-feature">
+            <span class="top-feature__icon">
+              <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" focusable="false">
+                <circle cx="21" cy="21" r="12" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                <path d="M30 30l11 11" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <h3 class="top-feature__title">条件でぴったり探せる</h3>
+            <p class="top-feature__text">職種・地域・スキル・報酬などで絞り込み。タレントには相性の良い案件を「相性◎」で知らせます。</p>
+          </li>
+          <li class="top-feature">
+            <span class="top-feature__icon">
+              <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" focusable="false">
+                <path d="M8 10h32a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H22l-9 7v-7H8a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+                <path d="M14 20h20M14 26h12" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <h3 class="top-feature__title">応募もスカウトもかんたん</h3>
+            <p class="top-feature__text">一言メッセージを添えて応募、気になる人には直接スカウト。進み具合はマイページでまとめて確認できます。</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. 注目のタレント（カードは js/pages/top.js が描画する） -->
+    <section class="top-section top-section--muted" data-top-section="featured-talents" aria-labelledby="top-talents-title">
+      <div class="container">
+        <div class="top-section__header">
+          <h2 class="top-section__title" id="top-talents-title">注目のタレント</h2>
+          <a class="top-section__more" href="talents.html">タレント一覧を見る<span aria-hidden="true"> →</span></a>
+        </div>
+        <p class="top-section__hint">横にスクロールして見られます。<span class="badge badge--video"><span aria-hidden="true">▶</span> 動画あり</span> は自己紹介動画を見られるタレントです。</p>
+        <div class="top-scroller" role="region" aria-label="注目のタレント（横スクロール）" tabindex="0" data-featured-talents></div>
+        <noscript><p>注目のタレントの表示には JavaScript を有効にしてください。</p></noscript>
+      </div>
+    </section>
+
+    <!-- 4. 新着案件（カードは js/pages/top.js が描画する） -->
+    <section class="top-section" data-top-section="new-jobs" aria-labelledby="top-jobs-title">
+      <div class="container">
+        <div class="top-section__header">
+          <h2 class="top-section__title" id="top-jobs-title">新着案件</h2>
+          <a class="top-section__more" href="jobs.html">案件一覧を見る<span aria-hidden="true"> →</span></a>
+        </div>
+        <div class="top-jobs" data-new-jobs></div>
+        <noscript><p>新着案件の表示には JavaScript を有効にしてください。</p></noscript>
+      </div>
+    </section>
+
+    <!-- 5. 利用ステップ（タブ切替は js/components/tabs.js） -->
+    <section class="top-section top-section--muted" data-top-section="steps" aria-labelledby="top-steps-title">
+      <div class="container">
+        <div class="top-section__header">
+          <h2 class="top-section__title" id="top-steps-title">ご利用の流れ</h2>
+          <a class="top-section__more" href="about.html">くわしい使い方<span aria-hidden="true"> →</span></a>
+        </div>
+        <div class="tabs">
+          <div class="tabs__list" role="tablist" aria-label="利用者の種類" data-step-tabs>
+            <button type="button" class="tabs__tab" role="tab" id="top-steps-tab-talent" aria-selected="true" aria-controls="top-steps-panel-talent">タレントの方</button>
+            <button type="button" class="tabs__tab" role="tab" id="top-steps-tab-company" aria-selected="false" aria-controls="top-steps-panel-company" tabindex="-1">企業の方</button>
+          </div>
+          <div class="tabs__panel" role="tabpanel" id="top-steps-panel-talent" aria-labelledby="top-steps-tab-talent" tabindex="0">
+            <ol class="top-steps" role="list">
+              <li class="top-step"><span class="top-step__number" aria-hidden="true">1</span><div class="top-step__body"><h3 class="top-step__title">タレントに切り替える</h3><p class="top-step__text">ヘッダーの「表示」を「タレント」にします（デモ用の切替です）。</p></div></li>
+              <li class="top-step"><span class="top-step__number" aria-hidden="true">2</span><div class="top-step__body"><h3 class="top-step__title">プロフィールと動画を登録</h3><p class="top-step__text">自己紹介文・スキルを書き、30秒前後の自己紹介動画を登録します。</p></div></li>
+              <li class="top-step"><span class="top-step__number" aria-hidden="true">3</span><div class="top-step__body"><h3 class="top-step__title">案件を探して応募</h3><p class="top-step__text">条件で絞り込み、気になる案件に一言メッセージを添えて応募します。</p></div></li>
+              <li class="top-step"><span class="top-step__number" aria-hidden="true">4</span><div class="top-step__body"><h3 class="top-step__title">結果・スカウトを確認</h3><p class="top-step__text">選考の状況や届いたスカウトはマイページで確認できます。</p></div></li>
+            </ol>
+          </div>
+          <div class="tabs__panel" role="tabpanel" id="top-steps-panel-company" aria-labelledby="top-steps-tab-company" tabindex="0" hidden>
+            <ol class="top-steps" role="list">
+              <li class="top-step"><span class="top-step__number" aria-hidden="true">1</span><div class="top-step__body"><h3 class="top-step__title">企業に切り替える</h3><p class="top-step__text">ヘッダーの「表示」を「企業」にします（デモ用の切替です）。</p></div></li>
+              <li class="top-step"><span class="top-step__number" aria-hidden="true">2</span><div class="top-step__body"><h3 class="top-step__title">案件を掲載</h3><p class="top-step__text">撮影日・地域・報酬・求める人物像を入力して募集を始めます。</p></div></li>
+              <li class="top-step"><span class="top-step__number" aria-hidden="true">3</span><div class="top-step__body"><h3 class="top-step__title">動画でタレントを探す</h3><p class="top-step__text">「動画ありのみ」で絞り込み、雰囲気を確かめてスカウトを送ります。</p></div></li>
+              <li class="top-step"><span class="top-step__number" aria-hidden="true">4</span><div class="top-step__body"><h3 class="top-step__title">応募者を管理</h3><p class="top-step__text">届いた応募はマイページで選考状況ごとに管理できます。</p></div></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. 利用者の声（架空。実在の人物・企業ではない） -->
+    <section class="top-section" data-top-section="voices" aria-labelledby="top-voices-title">
+      <div class="container">
+        <div class="top-section__header">
+          <h2 class="top-section__title" id="top-voices-title">利用者の声</h2>
+        </div>
+        <p class="top-section__hint top-voices__notice">※サンプルです。デモ用に作成した架空の声で、実在の人物・企業のものではありません。</p>
+        <ul class="top-voices" role="list">
+          <li>
+            <figure class="top-voice">
+              <blockquote class="top-voice__quote"><p>写真だけでは伝わらなかった声の雰囲気を動画で見てもらえて、初めてCMのオーディションに呼ばれました。</p></blockquote>
+              <figcaption class="top-voice__author">20代・俳優（サンプル）</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="top-voice">
+              <blockquote class="top-voice__quote"><p>書類の段階で話し方まで確認できるので、イメージ違いの手戻りが減りました。</p></blockquote>
+              <figcaption class="top-voice__author">映像制作会社・キャスティング担当（サンプル）</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="top-voice">
+              <blockquote class="top-voice__quote"><p>相性◎の案件から探せるので、自分に合う募集をすぐ見つけられます。</p></blockquote>
+              <figcaption class="top-voice__author">20代・ダンサー（サンプル）</figcaption>
+            </figure>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. お問い合わせへの CTA -->
+    <section class="top-cta" data-top-section="contact-cta" aria-labelledby="top-cta-title">
+      <div class="container top-cta__inner">
+        <h2 class="top-cta__title" id="top-cta-title">掲載・登録のご相談はお気軽に</h2>
+        <p class="top-cta__text">タレント登録、案件掲載、取材・提携など、どんなことでもお問い合わせください。</p>
+        <a class="button button--primary button--lg" href="contact.html">お問い合わせはこちら</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- フッターは js/common.js（components/footer.js）が描画する -->
+  <div id="site-footer"></div>
+
+  <!-- 共通JS → ページJS の順。ページJSが共通部品の描画結果を前提にできるようにするため -->
+  <script type="module" src="js/common.js"></script>
+  <script type="module" src="js/pages/top.js"></script>
+</body>
+</html>

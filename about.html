@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- 骨格は docs/templates/page-base.html と同じ。ページ固有の内容は <main> 内と pages/*.css / pages/*.js に書く -->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>サービス紹介 | StageLink</title>
+  <meta name="description" content="StageLink のしくみと使い方を紹介します。">
+  <!-- OGP：SNS で共有されたときのタイトル・説明。og:image / og:url は公開 URL が決まってから絶対 URL で足す -->
+  <meta property="og:title" content="サービス紹介 | StageLink">
+  <meta property="og:description" content="StageLink のしくみと使い方を紹介します。">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="StageLink">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- フォント：接続を先に確立して表示までの待ち時間を減らす。display=swap で読み込み中も文字を出す -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+
+  <!-- 共通ベース（#01） -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <!-- 共通UIコンポーネント -->
+  <link rel="stylesheet" href="css/components.css">
+  <!-- レイアウト：サイト共通＋ページの種類ごと -->
+  <link rel="stylesheet" href="css/layouts/site.css">
+  <link rel="stylesheet" href="css/layouts/static.css">
+  <!-- ページ固有 -->
+  <link rel="stylesheet" href="css/pages/static.css">
+</head>
+<body class="bg-background text-foreground">
+  <a href="#main" class="skip-link">本文へスキップ</a>
+
+  <!-- ヘッダーは js/common.js（components/header.js）が描画する -->
+  <div id="site-header"></div>
+
+  <main id="main">
+    <div class="static-layout">
+      <div class="static-layout__header">
+        <h1>サービス紹介</h1>
+        <p class="static-layout__lead">StageLink は、タレントと広告・映像制作会社をつなぐマッチングサイトです（ポートフォリオ用のデモサイトです）。</p>
+      </div>
+
+      <div class="static-layout__body">
+        <h2>StageLink とは</h2>
+        <p>CM・MV・ドラマ・舞台などの出演者を探す制作会社と、出演の機会を探すタレントが、お互いを見つけられる場所です。写真とプロフィールに加えて <strong>30秒前後の自己紹介動画</strong> を載せられるので、書類だけでは伝わりにくい表情・声・話し方まで確かめてから、応募やスカウトに進めます。</p>
+        <ul>
+          <li><strong>動画で伝わる</strong>：自己紹介動画で雰囲気まで届けられます。</li>
+          <li><strong>条件で探せる</strong>：職種・地域・スキル・報酬などで絞り込めます。タレントには相性の良い案件を「相性◎」で知らせます。</li>
+          <li><strong>応募もスカウトもかんたん</strong>：進み具合はマイページでまとめて確認できます。</li>
+        </ul>
+
+        <h2 id="talent-steps">タレントの方の使い方</h2>
+        <ol class="static-steps" role="list">
+          <li class="static-step"><span class="static-step__number" aria-hidden="true">1</span><div class="static-step__body"><h3 class="static-step__title">「タレント」に切り替える</h3><p class="static-step__text">ヘッダーの「表示」で「タレント」を選びます（デモ用のロール切替です。会員登録やログインはありません）。</p></div></li>
+          <li class="static-step"><span class="static-step__number" aria-hidden="true">2</span><div class="static-step__body"><h3 class="static-step__title">プロフィールと自己紹介動画を登録</h3><p class="static-step__text"><a href="profile-edit.html">プロフィール編集</a>で自己紹介文・スキルを書き、60秒以内の動画（MP4・WebM・MOV、50MBまで）を登録します。動画はこのブラウザ内にだけ保存されます。</p></div></li>
+          <li class="static-step"><span class="static-step__number" aria-hidden="true">3</span><div class="static-step__body"><h3 class="static-step__title">案件を探して応募</h3><p class="static-step__text"><a href="jobs.html">案件一覧</a>で条件を絞り込み、気になる案件に一言メッセージを添えて応募します。</p></div></li>
+          <li class="static-step"><span class="static-step__number" aria-hidden="true">4</span><div class="static-step__body"><h3 class="static-step__title">結果とスカウトを確認</h3><p class="static-step__text">選考の状況や企業から届いたスカウトは<a href="mypage.html">マイページ</a>で確認できます。</p></div></li>
+        </ol>
+
+        <h2 id="company-steps">企業の方の使い方</h2>
+        <ol class="static-steps" role="list">
+          <li class="static-step"><span class="static-step__number" aria-hidden="true">1</span><div class="static-step__body"><h3 class="static-step__title">「企業」に切り替える</h3><p class="static-step__text">ヘッダーの「表示」で「企業」を選びます。</p></div></li>
+          <li class="static-step"><span class="static-step__number" aria-hidden="true">2</span><div class="static-step__body"><h3 class="static-step__title">案件を掲載</h3><p class="static-step__text"><a href="job-new.html">案件掲載</a>で撮影日・地域・報酬・求める人物像を入力して募集を始めます。</p></div></li>
+          <li class="static-step"><span class="static-step__number" aria-hidden="true">3</span><div class="static-step__body"><h3 class="static-step__title">動画でタレントを探してスカウト</h3><p class="static-step__text"><a href="talents.html">タレント一覧</a>で「動画ありのみ」に絞り込み、詳細ページで雰囲気を確かめてスカウトを送ります。</p></div></li>
+          <li class="static-step"><span class="static-step__number" aria-hidden="true">4</span><div class="static-step__body"><h3 class="static-step__title">応募者を管理</h3><p class="static-step__text">届いた応募は<a href="mypage.html">マイページ</a>で選考状況ごとに管理できます。</p></div></li>
+        </ol>
+
+        <h2>デモサイトについて</h2>
+        <p>掲載しているタレント・企業・案件はすべて架空です。応募・スカウト・掲載した案件・プロフィール・動画は、ご覧になっているブラウザの中にだけ保存され、外部には送信されません。最初の状態に戻したいときは、マイページの「デモデータをリセット」を使ってください。</p>
+        <div class="static-actions">
+          <a class="button button--primary" href="talents.html">タレントを探す</a>
+          <a class="button button--outline" href="jobs.html">案件を探す</a>
+          <a class="button button--ghost" href="faq.html">よくある質問</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッターは js/common.js（components/footer.js）が描画する -->
+  <div id="site-footer"></div>
+
+  <!-- 共通JS → ページJS の順。ページJSが共通部品の描画結果を前提にできるようにするため -->
+  <script type="module" src="js/common.js"></script>
+  <!-- <script type="module" src="js/pages/xxx.js"></script> -->
+</body>
+</html>
